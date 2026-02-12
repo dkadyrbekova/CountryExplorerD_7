@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Игра окончена"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/tvResultCorrect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Правильно: 0"
+        android:textColor="#00B894"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tvResultWrong"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ошибок: 0"
+        android:textColor="#D63031"
+        android:textSize="18sp"
+        android:layout_marginBottom="20dp"/>
+
+    <Button
+        android:id="@+id/btnRetry"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Попробовать снова"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btnToMenu"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="В меню"
+        android:backgroundTint="#DFE6ED"
+        android:textColor="#2D3436"/>
+</LinearLayout>
