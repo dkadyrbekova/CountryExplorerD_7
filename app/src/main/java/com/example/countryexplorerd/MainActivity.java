@@ -1,13 +1,14 @@
-package com.example.countryexplorerd; // Проверь название своего пакета!
+package com.example.countryexplorerd;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen; // Импорт добавлен
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider; // Добавили
+import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
-import com.example.countryexplorerd.viewmodel.CountryViewModel; // Добавили
+import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,27 +20,25 @@ public class MainActivity extends AppCompatActivity {
     private List<Country> regionCountries = new ArrayList<>();
     private Map<String, CountryDetail> detailedMap = new HashMap<>();
     public static AppDatabase db;
-    private CountryViewModel viewModel; // Наш новый "мозг"
+    private CountryViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 1. Инициализируем SplashScreen ПЕРЕД super.onCreate
+        SplashScreen.installSplashScreen(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 1. Настройка базы данных Room (оставляем как было)
         db = Room.databaseBuilder(getApplicationContext(),
                         AppDatabase.class, "world_guide_db")
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
                 .build();
 
-        // 2. Инициализируем ViewModel
         viewModel = new ViewModelProvider(this).get(CountryViewModel.class);
-
-        // 3. Загружаем данные из Postman вместо файлов assets
         loadDataFromPostman();
 
-        // 4. Навигация (оставляем твой код)
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
@@ -69,16 +68,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDataFromPostman() {
-        // Подписываемся на список стран
         viewModel.getCountries().observe(this, countries -> {
             if (countries != null) {
                 regionCountries.clear();
                 regionCountries.addAll(countries);
-                // Тут можно обновить текущий фрагмент, если он уже открыт
             }
         });
 
-        // Подписываемся на детали
         viewModel.getDetails().observe(this, details -> {
             if (details != null) {
                 detailedMap.clear();
@@ -87,10 +83,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // Твой метод для получения списка (теперь из переменной)
-    public List<Country> getAllCountries() { return regionCountries; }
+    public List<Country> getAllCountries() {
+        return regionCountries;
+    }
 
-    // Твой метод открытия деталей (немного подправил под новые классы)
     public void openDetails(Country countryFromList) {
         Bundle b = new Bundle();
         b.putString("country_name", countryFromList.getName());

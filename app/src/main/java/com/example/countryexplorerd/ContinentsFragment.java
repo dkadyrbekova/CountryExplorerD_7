@@ -1,4 +1,4 @@
-package com.example.countryexplorerd; // Твой пакет
+package com.example.countryexplorerd;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -23,29 +23,51 @@ public class ContinentsFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Убедись, что fragment_continents.xml перенесен в res/layout
         View view = inflater.inflate(R.layout.fragment_continents, container, false);
 
-        // 1. Инициализация карты
         ImageView mapImage = view.findViewById(R.id.imgWorldMap);
 
-        // 2. Инициализация кнопок
         CardView cardCapitals = view.findViewById(R.id.cardCapitals);
         CardView cardFlags = view.findViewById(R.id.cardFlags);
         CardView cardCurrency = view.findViewById(R.id.cardCurrency);
 
-        // Кнопки пока просто выдают Toast, так как фрагментов игры еще нет
+        // ИСПРАВЛЕНО: Теперь ведет на выбор континента (CategorySelectFragment)
         if (cardCapitals != null) {
-            cardCapitals.setOnClickListener(v -> Toast.makeText(getContext(), "Режим: Столицы", Toast.LENGTH_SHORT).show());
-        }
-        if (cardFlags != null) {
-            cardFlags.setOnClickListener(v -> Toast.makeText(getContext(), "Режим: Флаги", Toast.LENGTH_SHORT).show());
-        }
-        if (cardCurrency != null) {
-            cardCurrency.setOnClickListener(v -> Toast.makeText(getContext(), "Режим: Валюты", Toast.LENGTH_SHORT).show());
+            cardCapitals.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putString("mode", "capitals"); // Передаем режим "столицы"
+
+                CategorySelectFragment fragment = new CategorySelectFragment();
+                fragment.setArguments(args);
+                switchFragment(fragment);
+            });
         }
 
-        // --- ЛОГИКА КЛИКОВ ПО КАРТЕ ---
+        // ИСПРАВЛЕНО: Теперь ведет на выбор континента (CategorySelectFragment)
+        if (cardFlags != null) {
+            cardFlags.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putString("mode", "flags"); // Передаем режим "флаги"
+
+                CategorySelectFragment fragment = new CategorySelectFragment();
+                fragment.setArguments(args);
+                switchFragment(fragment);
+            });
+        }
+
+        // ИСПРАВЛЕНО: Теперь ведет на выбор континента (CategorySelectFragment)
+        if (cardCurrency != null) {
+            cardCurrency.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putString("mode", "currency"); // Передаем режим "валюты"
+
+                CategorySelectFragment fragment = new CategorySelectFragment();
+                fragment.setArguments(args);
+                switchFragment(fragment);
+            });
+        }
+
+        // Клики по карте (оставляем как есть, они ведут на конкретные континенты)
         if (mapImage != null) {
             mapImage.setOnTouchListener((v, event) -> {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -77,27 +99,37 @@ public class ContinentsFragment extends Fragment {
     }
 
     private void openContinent(int r, int g, int b) {
-        // ВНИМАНИЕ: Здесь будут ошибки, пока мы не перенесем фрагменты континентов
-        // Если хочешь просто проверить карту, пока закомментируй switchFragment
-        String message = "";
+        Fragment fragment = null;
 
-        if (r > 150 && g < 120 && b < 120) message = "Азия";
-        else if (r > 100 && r < 220 && b > 150) message = "Африка";
-        else if (r < 160 && g > 110 && b > 180) message = "Сев. Америка";
-        else if (r > 180 && g > 150 && b < 170) message = "Юж. Америка";
-        else if (g > 140 && r < 100) message = "Европа";
-        else if (r > 100 && g > 60 && b < 160) message = "Австралия";
+        if (r > 150 && g < 120 && b < 120) {
+            Toast.makeText(getContext(), "Азия", Toast.LENGTH_SHORT).show();
+            fragment = new AsiaFragment();
+        } else if (r > 100 && r < 220 && b > 150) {
+            Toast.makeText(getContext(), "Африка", Toast.LENGTH_SHORT).show();
+            fragment = new AfricaFragment();
+        } else if (r < 160 && g > 110 && b > 180) {
+            Toast.makeText(getContext(), "Сев. Америка", Toast.LENGTH_SHORT).show();
+            fragment = new NAmericaFragment();
+        } else if (r > 180 && g > 150 && b < 170) {
+            Toast.makeText(getContext(), "Юж. Америка", Toast.LENGTH_SHORT).show();
+            fragment = new SAmericaFragment();
+        } else if (g > 140 && r < 100) {
+            Toast.makeText(getContext(), "Европа", Toast.LENGTH_SHORT).show();
+            fragment = new EuropeFragment();
+        } else if (r > 100 && g > 60 && b < 160) {
+            Toast.makeText(getContext(), "Австралия", Toast.LENGTH_SHORT).show();
+            fragment = new AustraliaFragment();
+        }
 
-        if (!message.isEmpty()) {
-            Toast.makeText(getContext(), "Выбран континент: " + message, Toast.LENGTH_SHORT).show();
-            // Тут позже добавим switchFragment(new AsiaFragment()); и т.д.
+        if (fragment != null) {
+            switchFragment(fragment);
         }
     }
 
     private void switchFragment(Fragment fragment) {
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
+                .addToBackStack(null) // Чтобы можно было вернуться назад к карте
                 .commit();
     }
 }

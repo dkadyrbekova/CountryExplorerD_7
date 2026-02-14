@@ -36,6 +36,7 @@ public class FlashcardFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            // Получаем данные, переданные из CategorySelectFragment
             mode = getArguments().getString("mode", "capitals");
             continent = getArguments().getString("continent", "");
         }
@@ -46,7 +47,6 @@ public class FlashcardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_flashcard, container, false);
 
-        // Привязываем UI
         tvCounter = view.findViewById(R.id.tvCounter);
         tvPercent = view.findViewById(R.id.tvPercent);
         tvCardContent = view.findViewById(R.id.tvCardContent);
@@ -54,9 +54,9 @@ public class FlashcardFragment extends Fragment {
         flashcard = view.findViewById(R.id.flashcard);
         btnLearned = view.findViewById(R.id.btnLearned);
 
+        // Кнопка назад в меню континентов
         view.findViewById(R.id.btnBackToMenu).setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
-        // Кнопки переключения
         view.findViewById(R.id.btnNext).setOnClickListener(v -> {
             if (!countryList.isEmpty() && currentIndex < countryList.size() - 1) {
                 currentIndex++;
@@ -75,7 +75,6 @@ public class FlashcardFragment extends Fragment {
 
         flashcard.setOnClickListener(v -> flipCard());
 
-        // MVVM: Получаем данные из сети вместо assets
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
         viewModel.getCountries().observe(getViewLifecycleOwner(), allCountries -> {
             if (allCountries != null && countryList.isEmpty()) {
@@ -88,22 +87,32 @@ public class FlashcardFragment extends Fragment {
         return view;
     }
 
+    // ИСПРАВЛЕННЫЙ МЕТОД ФИЛЬТРАЦИИ
     private void filterData(List<Country> all) {
         countryList.clear();
         for (Country c : all) {
-            // Если режим "Валюты" - берем все, иначе фильтруем по континенту
-            if ("currency".equalsIgnoreCase(mode)) {
-                countryList.add(c);
-            } else if (c.getRegion() != null && c.getRegion().equalsIgnoreCase(continent)) {
+            boolean matchesContinent = false;
+
+            // Если континент не выбран или выбраны "Все страны"
+            if (continent == null || continent.isEmpty() || "All".equalsIgnoreCase(continent)) {
+                matchesContinent = true;
+            }
+            // Иначе проверяем совпадение региона (игнорируя регистр)
+            else if (c.getRegion() != null && c.getRegion().equalsIgnoreCase(continent)) {
+                matchesContinent = true;
+            }
+
+            if (matchesContinent) {
                 countryList.add(c);
             }
         }
-        Collections.shuffle(countryList); // Перемешиваем карточки
+        // Перемешиваем список для обучения
+        Collections.shuffle(countryList);
     }
 
     private void updateUI() {
         if (countryList.isEmpty()) {
-            tvCardContent.setText("Загрузка...");
+            tvCardContent.setText("Стран не найдено");
             return;
         }
         Country c = countryList.get(currentIndex);
@@ -119,10 +128,8 @@ public class FlashcardFragment extends Fragment {
         if (countryList.isEmpty()) return;
         Country c = countryList.get(currentIndex);
 
-        // Анимация поворота на 90 градусов
         flashcard.animate().rotationY(90).setDuration(150).withEndAction(() -> {
             if (isFront) {
-                // Показываем "рубашку" карточки в зависимости от режима
                 if ("capitals".equalsIgnoreCase(mode)) {
                     tvCardContent.setText(c.getCapital());
                     tvHeader.setText("СТОЛИЦА");
@@ -131,7 +138,7 @@ public class FlashcardFragment extends Fragment {
                     tvCardContent.setText(c.getFlag());
                     tvHeader.setText("ФЛАГ");
                     tvCardContent.setTextSize(120);
-                } else {
+                } else if ("currency".equalsIgnoreCase(mode)) {
                     String val = c.getCurrency();
                     tvCardContent.setText(val != null ? val : "—");
                     tvHeader.setText("ВАЛЮТА");
@@ -146,7 +153,6 @@ public class FlashcardFragment extends Fragment {
             }
             isFront = !isFront;
 
-            // Завершаем поворот
             flashcard.setRotationY(-90);
             flashcard.animate().rotationY(0).setDuration(150).start();
         }).start();

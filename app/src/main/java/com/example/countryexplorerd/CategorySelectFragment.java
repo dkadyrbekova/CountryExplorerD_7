@@ -1,4 +1,4 @@
-package com.example.countryexplorerd; // Твой новый пакет
+package com.example.countryexplorerd;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ public class CategorySelectFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            // Получаем режим (что именно учим: столицы, флаги и т.д.)
+            // Получаем режим, выбранный на экране с картой
             currentMode = getArguments().getString("mode", "capitals");
         }
     }
@@ -25,21 +25,23 @@ public class CategorySelectFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Убедись, что fragment_category_select.xml в папке layout
         View view = inflater.inflate(R.layout.fragment_category_select, container, false);
 
+        // Кнопка назад
         ImageButton btnBack = view.findViewById(R.id.btnBackToModes);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
         }
 
-        // Настройка кликов по карточкам регионов
+        // Привязываем клики к карточкам из твоего XML
         setupClick(view.findViewById(R.id.selectEurope), "Europe");
         setupClick(view.findViewById(R.id.selectAsia), "Asia");
         setupClick(view.findViewById(R.id.selectAfrica), "Africa");
-        setupClick(view.findViewById(R.id.selectNAmerica), "North America");
-        setupClick(view.findViewById(R.id.selectSAmerica), "South America");
+        setupClick(view.findViewById(R.id.selectNAmerica), "Americas"); // Для API это обычно Americas
+        setupClick(view.findViewById(R.id.selectSAmerica), "Americas");
         setupClick(view.findViewById(R.id.selectAustralia), "Oceania");
+
+        // Кнопку btnAllCountries я удалила, так как её нет в твоем XML
 
         return view;
     }
@@ -47,7 +49,6 @@ public class CategorySelectFragment extends Fragment {
     private void setupClick(View cardView, String continentName) {
         if (cardView != null) {
             cardView.setOnClickListener(v -> {
-                // Переходим к самому фрагменту с карточками
                 FlashcardFragment fragment = new FlashcardFragment();
                 Bundle args = new Bundle();
                 args.putString("mode", currentMode);

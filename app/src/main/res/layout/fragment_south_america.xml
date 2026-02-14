@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,106 +17,37 @@
         android:insetTop="0dp"
         android:insetBottom="0dp" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Южная Америка"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:textColor="#2D3436"/>
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:alignmentMode="alignMargins">
+    <!-- ProgressBar для загрузки -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:visibility="visible"/>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/quizEurope"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="4dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🇪🇺" android:textSize="30sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Европа" android:textStyle="bold" android:layout_marginTop="5dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+    <!-- Текст когда список пуст -->
+    <TextView
+        android:id="@+id/emptyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Загрузка данных..."
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:textSize="16sp"
+        android:textColor="#666"
+        android:visibility="gone"/>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/quizAsia"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="4dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🌏" android:textSize="30sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Азия" android:textStyle="bold" android:layout_marginTop="5dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/quizAfrica"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="4dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🌍" android:textSize="30sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Африка" android:textStyle="bold" android:layout_marginTop="5dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/quizNAmerica"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="4dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🇨🇦" android:textSize="30sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Сев. Америка" android:textStyle="bold" android:layout_marginTop="5dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/quizSAmerica"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="4dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🇧🇷" android:textSize="30sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Юж. Америка" android:textStyle="bold" android:layout_marginTop="5dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/quizAustralia"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="4dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🇦🇺" android:textSize="30sp"/>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Австралия" android:textStyle="bold" android:layout_marginTop="5dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </GridLayout>
-    </ScrollView>
-
-    <!-- Добавлен RecyclerView для списка стран -->
+    <!-- Список стран -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSAmerica"
         android:layout_width="match_parent"
@@ -126,13 +56,4 @@
         android:layout_marginTop="10dp"
         android:visibility="gone"/>
 
-    <Button
-        android:id="@+id/quizAllWorld"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="10dp"
-        android:text="🌎 Все страны мира"
-        android:textAllCaps="false"
-        android:backgroundTint="#6200EE"
-        android:textSize="16sp" />
 </LinearLayout>
