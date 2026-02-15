@@ -1,46 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="12dp"
-    android:gravity="center_vertical"
-    android:background="?android:attr/selectableItemBackground">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="#FFFFFF">
 
-    <FrameLayout
-        android:layout_width="50dp"
-        android:layout_height="35dp">
-
-        <ImageView
-            android:id="@+id/ivRowFlag"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:visibility="gone" /> <TextView
-        android:id="@+id/tvRowFlag"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="24sp"
-        android:gravity="center"
-        android:visibility="visible" /> </FrameLayout>
-
-    <TextView
-        android:id="@+id/tvRowName"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#212121"
-        android:layout_marginStart="12dp"/>
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
-    <TextView
-        android:id="@+id/tvRowCapital"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="14sp"
-        android:textColor="#757575"
-        android:gravity="end" />
+        <!-- Флаг -->
+        <TextView
+            android:id="@+id/tvRowFlag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🇦🇺"
+            android:textSize="40sp"/>
 
-</LinearLayout>
+        <!-- Название и столица -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <TextView
+                android:id="@+id/tvRowName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Австралия"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                android:textColor="#1E293B"/>
+
+            <TextView
+                android:id="@+id/tvRowCapital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Канберра"
+                android:textSize="14sp"
+                android:textColor="#64748B"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Стрелка -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="›"
+            android:textSize="32sp"
+            android:textColor="#CBD5E1"/>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
