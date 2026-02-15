@@ -1,12 +1,16 @@
-package com.example.countryexplorerd; // Твой новый пакет
+package com.example.countryexplorerd;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
+import com.example.countryexplorerd.models.CountryNote;
 
-// Указываем сущности и версию
-@Database(entities = {FavoriteCountry.class}, version = 1)
+// ВАЖНО: Добавили CountryNote.class и увеличили версию до 2
+@Database(entities = {FavoriteCountry.class, CountryNote.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
-    // Ссылка на интерфейс, который мы создали отдельным файлом
+    // Существующий DAO для избранного
     public abstract FavoriteDao favoriteDao();
+
+    // НОВЫЙ DAO для заметок
+    public abstract CountryNoteDao noteDao();
 }

@@ -102,7 +102,7 @@
                     android:id="@+id/cardCurrency"
                     android:layout_width="match_parent"
                     android:layout_height="90dp"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="12dp"
                     app:cardCornerRadius="15dp"
                     app:cardElevation="4dp">
                     <RelativeLayout
@@ -118,6 +118,86 @@
                             android:textStyle="bold"
                             android:layout_centerVertical="true"/>
                     </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- НОВОЕ: Страна дня -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardCountryOfDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFDE7"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🌟 Страна дня"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#F57F17"
+                            android:layout_marginBottom="12dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/tvCountryFlag"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🌍"
+                                android:textSize="50sp"
+                                android:layout_marginEnd="16dp"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tvCountryName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Загрузка..."
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#333333"/>
+
+                                <TextView
+                                    android:id="@+id/tvCountryFact"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Интересный факт загружается..."
+                                    android:textSize="14sp"
+                                    android:textColor="#666666"
+                                    android:maxLines="3"
+                                    android:ellipsize="end"
+                                    android:layout_marginTop="6dp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnLearnMore"
+                            android:layout_width="wrap_content"
+                            android:layout_height="45dp"
+                            android:layout_gravity="end"
+                            android:text="Узнать больше →"
+                            android:textAllCaps="false"
+                            android:backgroundTint="#FFA726"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp"
+                            android:layout_marginTop="12dp"/>
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>

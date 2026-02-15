@@ -144,5 +144,70 @@
                 app:elevation="4dp" />
 
         </LinearLayout>
+
+        <!-- НОВОЕ: Раздел заметок -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
+            android:background="#DDDDDD" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📝 Мои заметки"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/etCountryNote"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="Добавьте свою заметку о стране..."
+            android:gravity="top|start"
+            android:padding="16dp"
+            android:background="@android:drawable/editbox_background"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="5"
+            android:scrollbars="vertical"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveNote"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Сохранить"
+                android:backgroundTint="#FF9800"
+                android:textColor="#FFFFFF"
+                app:cornerRadius="12dp"
+                app:elevation="3dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteNote"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Удалить"
+                android:textColor="#F44336"
+                app:strokeColor="#F44336"
+                app:cornerRadius="12dp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </ScrollView>
