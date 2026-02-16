@@ -2,7 +2,7 @@ package com.example.countryexplorerd;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.splashscreen.SplashScreen; // Импорт добавлен
+import androidx.core.splashscreen.SplashScreen;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
@@ -24,9 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // 1. Инициализируем SplashScreen ПЕРЕД super.onCreate
         SplashScreen.installSplashScreen(this);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -48,10 +46,10 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new ContinentsFragment();
             } else if (id == R.id.nav_all_countries) {
                 selectedFragment = new AllCountriesFragment();
-            } else if (id == R.id.nav_favorites) {
-                selectedFragment = new FavoritesFragment();
-            } else if (id == R.id.nav_quiz) {
+            } else if (id == R.id.nav_learn) {
                 selectedFragment = new QuizMenuFragment();
+            } else if (id == R.id.nav_profile) {
+                selectedFragment = new ProfileFragment();
             }
 
             if (selectedFragment != null) {

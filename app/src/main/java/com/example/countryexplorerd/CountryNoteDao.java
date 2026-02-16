@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import com.example.countryexplorerd.models.CountryNote;
+import java.util.List;
 
 @Dao
 public interface CountryNoteDao {
@@ -25,4 +26,11 @@ public interface CountryNoteDao {
 
     @Query("DELETE FROM country_notes WHERE countryName = :countryName")
     void deleteByCountry(String countryName);
+
+    @Query("SELECT * FROM country_notes")
+    List<CountryNote> getAllNotes();
+
+    // ДОБАВЬ ЭТО:
+    @Query("DELETE FROM country_notes")
+    void deleteAll();
 }

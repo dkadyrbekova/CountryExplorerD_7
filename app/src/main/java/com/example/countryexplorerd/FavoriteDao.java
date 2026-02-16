@@ -1,23 +1,27 @@
-package com.example.countryexplorerd; // Твой актуальный пакет
+package com.example.countryexplorerd;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy; // Добавим для безопасности
 import androidx.room.Query;
 import java.util.List;
 
 @Dao
 public interface FavoriteDao {
+
+    @Insert
+    void insert(FavoriteCountry favorite);
+
+    @Delete
+    void delete(FavoriteCountry favorite);
+
     @Query("SELECT * FROM favorites")
     List<FavoriteCountry> getAllFavorites();
 
-    @Query("SELECT EXISTS(SELECT * FROM favorites WHERE countryName = :name)")
+    @Query("SELECT EXISTS(SELECT 1 FROM favorites WHERE countryName = :name LIMIT 1)")
     boolean isFavorite(String name);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE) // Если вдруг такая запись есть, просто обновим
-    void insert(FavoriteCountry country);
-
-    @Delete
-    void delete(FavoriteCountry country);
+    // ДОБАВЬ ЭТО:
+    @Query("DELETE FROM favorites")
+    void deleteAll();
 }

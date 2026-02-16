@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/nav_continents"
-        android:icon="@android:drawable/ic_menu_mapmode"
-        android:title="Континенты" />
-    <item
-        android:id="@+id/nav_all_countries"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="Все страны" />
-    <item
-        android:id="@+id/nav_favorites"
-        android:icon="@android:drawable/btn_star_big_on"
-        android:title="Избранное" />
 
     <item
-        android:id="@+id/nav_quiz"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:id="@+id/nav_continents"
+        android:icon="@drawable/ic_map"
+        android:title="Континенты" />
+
+    <item
+        android:id="@+id/nav_all_countries"
+        android:icon="@drawable/ic_globe"
+        android:title="Все страны" />
+
+    <item
+        android:id="@+id/nav_learn"
+        android:icon="@drawable/ic_school"
         android:title="Викторина" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_person"
+        android:title="Мой профиль" />
+
 </menu>
