@@ -1,6 +1,9 @@
 package com.example.countryexplorerd;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,14 +23,19 @@ public class DetailsFragment extends Fragment {
 
     private String countryName;
     private EditText etNote;
+    private ImageButton btnFavorite; // Переменная для звезды
+    private boolean isFavorite = false; // Статус избранного
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Используем твой новый XML с кнопкой btnFavorite
         View view = inflater.inflate(R.layout.fragment_details, container, false);
 
         // Привязка элементов интерфейса
         ImageButton btnBack = view.findViewById(R.id.btnBackDetails);
+        btnFavorite = view.findViewById(R.id.btnFavorite); // Привязываем звезду
+
         TextView tvFlag = view.findViewById(R.id.details_flag);
         TextView tvName = view.findViewById(R.id.details_name);
         TextView tvCapital = view.findViewById(R.id.details_capital);
@@ -38,7 +46,6 @@ public class DetailsFragment extends Fragment {
         MaterialButton btnMap = view.findViewById(R.id.btnOpenMap);
         MaterialButton btnShare = view.findViewById(R.id.btnShare);
 
-        // НОВОЕ: Элементы для заметок
         etNote = view.findViewById(R.id.etCountryNote);
         MaterialButton btnSaveNote = view.findViewById(R.id.btnSaveNote);
         MaterialButton btnDeleteNote = view.findViewById(R.id.btnDeleteNote);
@@ -54,10 +61,16 @@ public class DetailsFragment extends Fragment {
             tvLanguage.setText(getArguments().getString("country_language", "Не указан"));
             tvInfo.setText(getArguments().getString("country_info", "Описание скоро появится..."));
 
-            // Загружаем существующую заметку
+            // --- ЛОГИКА ИЗБРАННОГО ---
+            checkFavoriteStatus();
+
+            if (btnFavorite != null) {
+                btnFavorite.setOnClickListener(v -> toggleFavorite());
+            }
+
+            // --- ТВОЯ ЛОГИКА ЗАМЕТОК (БЕЗ ИЗМЕНЕНИЙ) ---
             loadNote();
 
-            // Кнопка открытия карт
             if (btnMap != null) {
                 btnMap.setOnClickListener(v -> {
                     try {
@@ -70,12 +83,10 @@ public class DetailsFragment extends Fragment {
                 });
             }
 
-            // Кнопка "Поделиться"
             if (btnShare != null) {
                 btnShare.setOnClickListener(v -> {
                     String info = getArguments().getString("country_info", "");
                     String shareText = "Страна: " + countryName + "\nИнфо: " + info;
-
                     Intent sendIntent = new Intent(Intent.ACTION_SEND);
                     sendIntent.setType("text/plain");
                     sendIntent.putExtra(Intent.EXTRA_TEXT, shareText);
@@ -83,18 +94,15 @@ public class DetailsFragment extends Fragment {
                 });
             }
 
-            // НОВОЕ: Сохранить заметку
             if (btnSaveNote != null) {
                 btnSaveNote.setOnClickListener(v -> saveNote());
             }
 
-            // НОВОЕ: Удалить заметку
             if (btnDeleteNote != null) {
                 btnDeleteNote.setOnClickListener(v -> deleteNote());
             }
         }
 
-        // Кнопка Назад
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
         }
@@ -102,12 +110,42 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
+    // Метод для проверки, добавлена ли страна в избранное
+    private void checkFavoriteStatus() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE);
+        isFavorite = prefs.getBoolean(countryName, false);
+        updateFavoriteIcon();
+    }
+
+    // Метод для переключения избранного
+    private void toggleFavorite() {
+        isFavorite = !isFavorite;
+        SharedPreferences prefs = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(countryName, isFavorite).apply();
+        updateFavoriteIcon();
+
+        String msg = isFavorite ? "Добавлено в избранное" : "Удалено";
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    }
+
+    // Метод для обновления иконки звезды
+    private void updateFavoriteIcon() {
+        if (btnFavorite != null) {
+            if (isFavorite) {
+                btnFavorite.setImageResource(android.R.drawable.btn_star_big_on);
+                btnFavorite.setColorFilter(Color.YELLOW);
+            } else {
+                btnFavorite.setImageResource(android.R.drawable.btn_star_big_off);
+                btnFavorite.setColorFilter(Color.WHITE);
+            }
+        }
+    }
+
+    // --- ТВОИ ОРИГИНАЛЬНЫЕ МЕТОДЫ (БЕЗ ИЗМЕНЕНИЙ ЛОГИКИ) ---
+
     private void loadNote() {
-        // Загружаем заметку из базы данных в фоновом потоке
         new Thread(() -> {
             CountryNote note = MainActivity.db.noteDao().getNoteByCountry(countryName);
-
-            // Обновляем UI в главном потоке
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (note != null && etNote != null) {
@@ -123,19 +161,14 @@ public class DetailsFragment extends Fragment {
 
     private void saveNote() {
         if (etNote == null) return;
-
         String noteText = etNote.getText().toString().trim();
-
         if (noteText.isEmpty()) {
             Toast.makeText(getContext(), "Заметка пустая", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Сохраняем в фоновом потоке
         new Thread(() -> {
             CountryNote note = new CountryNote(countryName, noteText);
             MainActivity.db.noteDao().insert(note);
-
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() ->
                         Toast.makeText(getContext(), "Заметка сохранена ✓", Toast.LENGTH_SHORT).show()
@@ -145,10 +178,8 @@ public class DetailsFragment extends Fragment {
     }
 
     private void deleteNote() {
-        // Удаляем заметку в фоновом потоке
         new Thread(() -> {
             MainActivity.db.noteDao().deleteByCountry(countryName);
-
             if (getActivity() != null) {
                 getActivity().runOnUiThread(() -> {
                     if (etNote != null) {
