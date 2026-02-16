@@ -1,67 +1,79 @@
-package com.example.countryexplorerd; // Твой новый пакет
+package com.example.countryexplorerd;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import com.example.countryexplorerd.viewmodel.CountryViewModel;
 
 public class QuizMenuFragment extends Fragment {
+
+    private CountryViewModel viewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Убедись, что файл fragment_quiz_menu.xml перенесен в res/layout
         View view = inflater.inflate(R.layout.fragment_quiz_menu, container, false);
 
-        // Привязываем клики к карточкам (проверь ID в твоем XML)
+        viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
+
+        // Карточки режимов
         setupCard(view, R.id.cardQuizCapitals, "Capitals");
         setupCard(view, R.id.cardQuizFlags, "Flags");
         setupCard(view, R.id.cardQuizCurrency, "Currencies");
 
-        // Логика для Избранного (запуск викторины по флагам только из избранных стран)
-        View favCard = view.findViewById(R.id.cardQuizFavorites);
-        if (favCard != null) {
-            favCard.setOnClickListener(v -> launchFavoriteQuiz());
+        // Избранное
+        CardView cardFavorites = view.findViewById(R.id.cardQuizFavorites);
+        if (cardFavorites != null) {
+            cardFavorites.setOnClickListener(v -> launchFavoriteQuiz());
         }
 
         return view;
     }
 
     private void setupCard(View root, int viewId, String gameType) {
-        View card = root.findViewById(viewId);
+        CardView card = root.findViewById(viewId);
         if (card != null) {
             card.setOnClickListener(v -> openRegionSelect(gameType));
         }
     }
 
     private void openRegionSelect(String gameType) {
-        // Здесь мы переходим к выбору региона (Европа, Азия и т.д.)
         QuizRegionSelectFragment fragment = new QuizRegionSelectFragment();
         Bundle args = new Bundle();
         args.putString("game_type", gameType);
         fragment.setArguments(args);
 
-        switchFragment(fragment);
-    }
-
-    private void launchFavoriteQuiz() {
-        // Запуск игры напрямую для избранных стран
-        QuizGameFragment fragment = new QuizGameFragment();
-        Bundle args = new Bundle();
-        args.putString("game_type", "Flags"); // По умолчанию для избранного ставим Флаги
-        args.putString("region", "Favorites");
-        fragment.setArguments(args);
-
-        switchFragment(fragment);
-    }
-
-    private void switchFragment(Fragment fragment) {
         getParentFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    private void launchFavoriteQuiz() {
+        // Проверяем есть ли избранные
+        viewModel.loadFavorites();
+        viewModel.getFavorites().observe(getViewLifecycleOwner(), favorites -> {
+            if (favorites == null || favorites.isEmpty()) {
+                Toast.makeText(getContext(), "Добавьте страны в избранное!", Toast.LENGTH_SHORT).show();
+            } else {
+                QuizGameFragment fragment = new QuizGameFragment();
+                Bundle args = new Bundle();
+                args.putString("game_type", "Flags");
+                args.putString("region", "Favorites");
+                fragment.setArguments(args);
+
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
     }
 }

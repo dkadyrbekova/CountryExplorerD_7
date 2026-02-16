@@ -1,7 +1,7 @@
 package com.example.countryexplorerd;
 
-import android.app.AlertDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,48 +16,62 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.countryexplorerd.models.Country;
+import com.example.countryexplorerd.models.CountryDetail;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class QuizGameFragment extends Fragment {
 
     private String gameType, region;
     private List<Country> filteredCountries = new ArrayList<>();
-    private int lives = 3, correctCount = 0, totalWrong = 0;
+    private int lives = 3, correctCount = 0, totalQuestions = 0, streak = 0, maxStreak = 0;
     private CountDownTimer timer;
-    private long timeLeftInMillis = 10000;
+    private long timeLeftInMillis = 15000;
     private boolean isPaused = false;
-    private TextView tvCountry, tvTimer, tvLives;
+
+    private TextView tvQuestion, tvTimer, tvLives, tvScore, tvProgress, tvStreak;
     private Button[] btns = new Button[4];
-    private ImageButton btnPause;
+    private ImageButton btnPause, btnBack;
+    private ProgressBar progressBar;
     private CountryViewModel viewModel;
+    private Map<String, CountryDetail> detailsMap;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Убедись, что этот XML файл существует!
         View view = inflater.inflate(R.layout.fragment_quiz_game, container, false);
 
-        tvCountry = view.findViewById(R.id.tvQuizCountryName);
+        // Инициализация элементов
+        tvQuestion = view.findViewById(R.id.tvQuizQuestion);
         tvTimer = view.findViewById(R.id.tvQuizTimer);
         tvLives = view.findViewById(R.id.tvQuizLives);
+        tvScore = view.findViewById(R.id.tvQuizScore);
+        tvProgress = view.findViewById(R.id.tvQuizProgress);
+        tvStreak = view.findViewById(R.id.tvQuizStreak);
+        progressBar = view.findViewById(R.id.progressBarQuiz);
+
         btnPause = view.findViewById(R.id.btnQuizPause);
+        btnBack = view.findViewById(R.id.btnQuizBack);
+
         btns[0] = view.findViewById(R.id.btnAnswer1);
         btns[1] = view.findViewById(R.id.btnAnswer2);
         btns[2] = view.findViewById(R.id.btnAnswer3);
         btns[3] = view.findViewById(R.id.btnAnswer4);
 
-        view.findViewById(R.id.btnQuizBack).setOnClickListener(v -> {
+        btnBack.setOnClickListener(v -> {
             if (timer != null) timer.cancel();
             getParentFragmentManager().popBackStack();
         });
@@ -70,6 +84,13 @@ public class QuizGameFragment extends Fragment {
             gameType = getArguments().getString("game_type");
             region = getArguments().getString("region");
 
+            // Загружаем детали для валют
+            viewModel.getDetails().observe(getViewLifecycleOwner(), details -> {
+                if (details != null) {
+                    detailsMap = details;
+                }
+            });
+
             viewModel.getCountries().observe(getViewLifecycleOwner(), countries -> {
                 if (countries != null && filteredCountries.isEmpty()) {
                     filterCountries(countries);
@@ -77,6 +98,8 @@ public class QuizGameFragment extends Fragment {
                         Toast.makeText(getContext(), "Нужно минимум 4 страны!", Toast.LENGTH_SHORT).show();
                         getParentFragmentManager().popBackStack();
                     } else {
+                        updateLivesUI();
+                        updateScoreUI();
                         nextQuestion();
                     }
                 }
@@ -87,18 +110,41 @@ public class QuizGameFragment extends Fragment {
     }
 
     private void filterCountries(List<Country> allCountries) {
-        for (Country c : allCountries) {
-            if ("All".equals(region) || (c.getRegion() != null && c.getRegion().equalsIgnoreCase(region))) {
-                filteredCountries.add(c);
+        if ("Favorites".equals(region)) {
+            // Загружаем только избранные
+            viewModel.loadFavorites();
+            viewModel.getFavorites().observe(getViewLifecycleOwner(), favorites -> {
+                if (favorites != null) {
+                    for (FavoriteCountry fav : favorites) {
+                        for (Country c : allCountries) {
+                            if (c.getName().equals(fav.getCountryName())) {
+                                filteredCountries.add(c);
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            for (Country c : allCountries) {
+                if ("All".equals(region) || (c.getRegion() != null && c.getRegion().equalsIgnoreCase(region))) {
+                    filteredCountries.add(c);
+                }
             }
         }
     }
 
     private void nextQuestion() {
-        if (lives <= 0) { showResultDialog(); return; }
+        if (lives <= 0 || totalQuestions >= 10) {
+            showResultDialog();
+            return;
+        }
 
         isPaused = false;
-        timeLeftInMillis = 10000;
+        timeLeftInMillis = 15000;
+        totalQuestions++;
+
+        updateProgressUI();
         startTimer(timeLeftInMillis);
 
         Country correct = filteredCountries.get(new Random().nextInt(filteredCountries.size()));
@@ -106,46 +152,63 @@ public class QuizGameFragment extends Fragment {
 
         // Логика типов игры
         if ("Capitals".equals(gameType)) {
-            question = "Столица страны:\n" + correct.getName();
+            question = correct.getName();
             answer = correct.getCapital();
         } else if ("Flags".equals(gameType)) {
-            question = "Чей это флаг?\n" + correct.getFlag();
+            question = correct.getFlag();
             answer = correct.getName();
-        } else {
-            question = "Валюта страны:\n" + correct.getName();
-            answer = correct.getCurrency();
+        } else { // Currencies
+            question = correct.getName();
+            if (detailsMap != null && detailsMap.containsKey(correct.getName())) {
+                answer = detailsMap.get(correct.getName()).getCurrency();
+            } else {
+                answer = "???";
+            }
         }
 
-        tvCountry.setText(question);
+        tvQuestion.setText(question);
         final String finalAnswer = (answer != null) ? answer : "---";
-        List<String> options = generateOptions(finalAnswer);
+        List<String> options = generateOptions(correct, finalAnswer);
         Collections.shuffle(options);
 
         for (int i = 0; i < 4; i++) {
             btns[i].setText(options.get(i));
             btns[i].setEnabled(true);
-            btns[i].setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
+            btns[i].setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
             final String sel = options.get(i);
             final Button currentBtn = btns[i];
 
             btns[i].setOnClickListener(v -> {
                 if (isPaused) return;
-                boolean isCorrect = sel.equals(finalAnswer);
-                if (isCorrect) {
-                    for (Button b : btns) b.setEnabled(false);
-                    if (timer != null) timer.cancel();
-                }
+                if (timer != null) timer.cancel();
+                for (Button b : btns) b.setEnabled(false);
 
+                boolean isCorrect = sel.equals(finalAnswer);
                 animateButton(currentBtn, isCorrect, () -> {
                     if (isCorrect) {
                         correctCount++;
-                        nextQuestion();
+                        streak++;
+                        if (streak > maxStreak) maxStreak = streak;
+                        updateScoreUI();
+                        saveProgress();
+                        new Handler().postDelayed(this::nextQuestion, 800);
                     } else {
-                        totalWrong++;
-                        handleWrongAnswer(currentBtn);
+                        streak = 0;
+                        handleWrongAnswer();
                     }
                 });
             });
+        }
+    }
+
+    private void saveProgress() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("UserProgress", Context.MODE_PRIVATE);
+        if ("Capitals".equals(gameType)) {
+            prefs.edit().putBoolean("capitals_" + filteredCountries.get(0).getName(), true).apply();
+        } else if ("Flags".equals(gameType)) {
+            prefs.edit().putBoolean("flags_" + filteredCountries.get(0).getName(), true).apply();
+        } else {
+            prefs.edit().putBoolean("currency_" + filteredCountries.get(0).getName(), true).apply();
         }
     }
 
@@ -163,24 +226,40 @@ public class QuizGameFragment extends Fragment {
 
     private void startTimer(long duration) {
         if (timer != null) timer.cancel();
-        timer = new CountDownTimer(duration, 1000) {
+        timer = new CountDownTimer(duration, 100) {
             public void onTick(long m) {
                 timeLeftInMillis = m;
-                tvTimer.setText("⏱ " + m / 1000);
+                int seconds = (int) (m / 1000);
+                tvTimer.setText(seconds + "s");
+
+                // Меняем цвет таймера когда мало времени
+                if (seconds <= 5) {
+                    tvTimer.setTextColor(Color.parseColor("#E74C3C"));
+                } else {
+                    tvTimer.setTextColor(Color.parseColor("#2ECC71"));
+                }
             }
             public void onFinish() {
-                if (!isPaused) { lives--; updateLivesUI(); nextQuestion(); }
+                if (!isPaused) {
+                    streak = 0;
+                    handleWrongAnswer();
+                }
             }
         }.start();
     }
 
-    private void handleWrongAnswer(Button wrongBtn) {
+    private void handleWrongAnswer() {
         lives--;
         updateLivesUI();
-        if (lives <= 0) showResultDialog();
-        else {
-            wrongBtn.setEnabled(false);
-            wrongBtn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#DCDDE1")));
+        updateScoreUI();
+
+        Vibrator v = (Vibrator) requireContext().getSystemService(Context.VIBRATOR_SERVICE);
+        if (v != null) v.vibrate(VibrationEffect.createOneShot(300, 255));
+
+        if (lives <= 0 || totalQuestions >= 10) {
+            showResultDialog();
+        } else {
+            new Handler().postDelayed(this::nextQuestion, 1000);
         }
     }
 
@@ -188,28 +267,44 @@ public class QuizGameFragment extends Fragment {
         int color = isCorrect ? Color.parseColor("#2ECC71") : Color.parseColor("#E74C3C");
         button.setBackgroundTintList(ColorStateList.valueOf(color));
 
-        // Убедись, что файлы zoom_in.xml и shake.xml созданы!
         try {
             Animation anim = AnimationUtils.loadAnimation(getContext(), isCorrect ? R.anim.zoom_in : R.anim.shake);
             button.startAnimation(anim);
         } catch (Exception e) {
-            // Если анимации нет, просто идем дальше
+            // Анимация опциональна
         }
 
         if (!isCorrect) {
             Vibrator v = (Vibrator) requireContext().getSystemService(Context.VIBRATOR_SERVICE);
             if (v != null) v.vibrate(VibrationEffect.createOneShot(200, 255));
         }
+
         new Handler().postDelayed(onEnd, 600);
     }
 
-    private List<String> generateOptions(String correct) {
+    private List<String> generateOptions(Country correct, String correctAnswer) {
         List<String> options = new ArrayList<>();
-        options.add(correct);
+        options.add(correctAnswer);
+
         while (options.size() < 4) {
             Country r = filteredCountries.get(new Random().nextInt(filteredCountries.size()));
-            String cand = "Capitals".equals(gameType) ? r.getCapital() : r.getName();
-            if (cand != null && !options.contains(cand)) options.add(cand);
+            String cand;
+
+            if ("Capitals".equals(gameType)) {
+                cand = r.getCapital();
+            } else if ("Flags".equals(gameType)) {
+                cand = r.getName();
+            } else { // Currencies
+                if (detailsMap != null && detailsMap.containsKey(r.getName())) {
+                    cand = detailsMap.get(r.getName()).getCurrency();
+                } else {
+                    continue;
+                }
+            }
+
+            if (cand != null && !options.contains(cand) && !cand.equals(correctAnswer)) {
+                options.add(cand);
+            }
         }
         return options;
     }
@@ -217,29 +312,68 @@ public class QuizGameFragment extends Fragment {
     private void updateLivesUI() {
         StringBuilder h = new StringBuilder();
         for (int i = 0; i < lives; i++) h.append("❤️");
+        for (int i = lives; i < 3; i++) h.append("🖤");
         tvLives.setText(h.toString());
+    }
+
+    private void updateScoreUI() {
+        tvScore.setText("⭐ " + correctCount);
+        if (streak > 0) {
+            tvStreak.setVisibility(View.VISIBLE);
+            tvStreak.setText("🔥 " + streak);
+        } else {
+            tvStreak.setVisibility(View.GONE);
+        }
+    }
+
+    private void updateProgressUI() {
+        tvProgress.setText(totalQuestions + "/10");
+        progressBar.setMax(10);
+        progressBar.setProgress(totalQuestions);
     }
 
     private void showResultDialog() {
         if (timer != null) timer.cancel();
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View v = getLayoutInflater().inflate(R.layout.dialog_quiz_result, null);
         builder.setView(v);
         builder.setCancelable(false);
         AlertDialog d = builder.create();
 
-        ((TextView)v.findViewById(R.id.tvResultCorrect)).setText("Правильно: " + correctCount);
-        ((TextView)v.findViewById(R.id.tvResultWrong)).setText("Ошибок: " + totalWrong);
+        int percentage = (int) ((correctCount * 100.0) / totalQuestions);
+
+        ((TextView)v.findViewById(R.id.tvResultCorrect)).setText("Правильно: " + correctCount + "/" + totalQuestions);
+        ((TextView)v.findViewById(R.id.tvResultPercentage)).setText(percentage + "%");
+        ((TextView)v.findViewById(R.id.tvResultStreak)).setText("Лучшая серия: " + maxStreak + " 🔥");
 
         v.findViewById(R.id.btnRetry).setOnClickListener(view -> {
-            d.dismiss(); lives = 3; correctCount = 0; totalWrong = 0; updateLivesUI(); nextQuestion();
+            d.dismiss();
+            resetGame();
         });
+
         v.findViewById(R.id.btnToMenu).setOnClickListener(view -> {
-            d.dismiss(); getParentFragmentManager().popBackStack();
+            d.dismiss();
+            getParentFragmentManager().popBackStack();
         });
+
         d.show();
     }
 
+    private void resetGame() {
+        lives = 3;
+        correctCount = 0;
+        totalQuestions = 0;
+        streak = 0;
+        maxStreak = 0;
+        updateLivesUI();
+        updateScoreUI();
+        nextQuestion();
+    }
+
     @Override
-    public void onDestroy() { super.onDestroy(); if (timer != null) timer.cancel(); }
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null) timer.cancel();
+    }
 }

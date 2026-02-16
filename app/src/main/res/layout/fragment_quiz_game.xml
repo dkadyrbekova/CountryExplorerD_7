@@ -4,154 +4,250 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/quiz_bg"
-    android:padding="16dp">
+    android:background="@drawable/quiz_background_gradient">
 
-    <RelativeLayout
+    <!-- Шапка -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
-        <Button
+        <ImageButton
             android:id="@+id/btnQuizBack"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@android:color/transparent"
-            android:text="←"
-            android:textColor="#2D3436"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_circle_white"
+            android:src="@android:drawable/ic_menu_revert"
+            android:tint="#FF6B6B"
+            android:contentDescription="Назад"/>
+
+        <TextView
+            android:id="@+id/tvQuizProgress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="1/10"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_marginHorizontal="12dp"/>
+
+        <ImageButton
+            android:id="@+id/btnQuizPause"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_circle_white"
+            android:src="@android:drawable/ic_media_pause"
+            android:tint="#4ECDC4"
+            android:contentDescription="Пауза"/>
+    </LinearLayout>
+
+    <!-- Прогресс-бар -->
+    <ProgressBar
+        android:id="@+id/progressBarQuiz"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:max="10"
+        android:progress="1"
+        android:progressTint="#FFD93D"
+        android:progressBackgroundTint="#FFFFFF33"/>
+
+    <!-- Статистика -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:gravity="center">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Жизни"
+                android:textSize="12sp"
+                android:textColor="#FFFFFFAA"/>
+
+            <TextView
+                android:id="@+id/tvQuizLives"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="❤️❤️❤️"
+                android:textSize="20sp"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Таймер"
+                android:textSize="12sp"
+                android:textColor="#FFFFFFAA"/>
 
             <TextView
                 android:id="@+id/tvQuizTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/timer_badge"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="6dp"
-                android:text="⏱ 10"
-                android:textColor="#E74C3C"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <ImageButton
-                android:id="@+id/btnQuizPause"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_media_pause"
-                app:tint="#2D3436" />
+                android:text="15s"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#2ECC71"
+                android:layout_marginTop="4dp"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvQuizLives"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:text="❤️❤️❤️"
-            android:textSize="18sp" />
-    </RelativeLayout>
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="6dp">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_weight="1"
             android:orientation="vertical"
-            android:padding="32dp"
-            android:background="#FFFFFF">
+            android:gravity="center">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="УГАДАЙ СТРАНУ"
-                android:textColor="#636E72"
+                android:text="Счёт"
                 android:textSize="12sp"
-                android:letterSpacing="0.1"
-                android:textStyle="bold" />
+                android:textColor="#FFFFFFAA"/>
+
             <TextView
-                android:id="@+id/tvQuizCountryName"
-                android:layout_width="match_parent"
+                android:id="@+id/tvQuizScore"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:text="⭐ 0"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFD93D"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Серия -->
+    <TextView
+        android:id="@+id/tvQuizStreak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="🔥 3"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#FF6B6B"
+        android:background="@drawable/streak_badge"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="6dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"/>
+
+    <!-- Вопрос -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ВОПРОС"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#95A5A6"
+                android:letterSpacing="0.2"/>
+
+            <TextView
+                android:id="@+id/tvQuizQuestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Бразилия"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                android:textColor="#2C3E50"
                 android:gravity="center"
-                android:text="Франция"
-                android:textColor="#2D3436"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:layout_marginTop="16dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Варианты ответов -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="8dp">
-        <com.google.android.material.button.MaterialButton
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="20dp">
+
+        <Button
             android:id="@+id/btnAnswer1"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginBottom="12dp"
-            android:textAllCaps="false"
-            android:textColor="#2D3436"
+            android:layout_height="60dp"
+            android:text="Бразилиа"
             android:textSize="17sp"
-            app:backgroundTint="#FFFFFF"
-            app:cornerRadius="16dp"
-            app:strokeColor="#DFE6ED"
-            app:strokeWidth="1dp" />
-        <com.google.android.material.button.MaterialButton
+            android:textStyle="bold"
+            android:textColor="#2C3E50"
+            android:background="@drawable/quiz_button_answer"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
             android:id="@+id/btnAnswer2"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginBottom="12dp"
-            android:textAllCaps="false"
-            android:textColor="#2D3436"
+            android:layout_height="60dp"
+            android:text="Рио-де-Жанейро"
             android:textSize="17sp"
-            app:backgroundTint="#FFFFFF"
-            app:cornerRadius="16dp"
-            app:strokeColor="#DFE6ED"
-            app:strokeWidth="1dp" />
-        <com.google.android.material.button.MaterialButton
+            android:textStyle="bold"
+            android:textColor="#2C3E50"
+            android:background="@drawable/quiz_button_answer"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
             android:id="@+id/btnAnswer3"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginBottom="12dp"
-            android:textAllCaps="false"
-            android:textColor="#2D3436"
+            android:layout_height="60dp"
+            android:text="Сан-Паулу"
             android:textSize="17sp"
-            app:backgroundTint="#FFFFFF"
-            app:cornerRadius="16dp"
-            app:strokeColor="#DFE6ED"
-            app:strokeWidth="1dp" />
-        <com.google.android.material.button.MaterialButton
+            android:textStyle="bold"
+            android:textColor="#2C3E50"
+            android:background="@drawable/quiz_button_answer"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
             android:id="@+id/btnAnswer4"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginBottom="12dp"
-            android:textAllCaps="false"
-            android:textColor="#2D3436"
+            android:layout_height="60dp"
+            android:text="Салвадор"
             android:textSize="17sp"
-            app:backgroundTint="#FFFFFF"
-            app:cornerRadius="16dp"
-            app:strokeColor="#DFE6ED"
-            app:strokeWidth="1dp" />
+            android:textStyle="bold"
+            android:textColor="#2C3E50"
+            android:background="@drawable/quiz_button_answer"/>
     </LinearLayout>
+
 </LinearLayout>
