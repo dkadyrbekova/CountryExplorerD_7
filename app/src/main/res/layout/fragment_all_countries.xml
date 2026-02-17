@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8FAFC">
+    android:background="@color/colorBackground">
 
     <!-- Шапка с поиском -->
     <LinearLayout
@@ -24,14 +24,13 @@
             android:textStyle="bold"
             android:textColor="#FFFFFF"/>
 
-        <!-- Поле поиска -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="#FFFFFF">
+            app:cardBackgroundColor="@color/colorSearchBg">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +43,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@android:drawable/ic_menu_search"
-                    android:tint="#94A3B8"/>
+                    android:tint="@color/colorTextHint"/>
 
                 <EditText
                     android:id="@+id/etSearch"
@@ -53,8 +52,8 @@
                     android:layout_weight="1"
                     android:hint="Найти страну..."
                     android:textSize="16sp"
-                    android:textColor="#1E293B"
-                    android:textColorHint="#94A3B8"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textColorHint="@color/colorTextHint"
                     android:background="@android:color/transparent"
                     android:paddingHorizontal="12dp"
                     android:inputType="text"
@@ -63,7 +62,6 @@
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 
-    <!-- Список стран -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvAllCountries"
         android:layout_width="match_parent"

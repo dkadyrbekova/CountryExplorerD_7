@@ -1,5 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Светлая тема -->
+    <color name="colorBackground">#F8FAFC</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorCardBackground">#FFFFFF</color>
+    <color name="colorTextPrimary">#1E293B</color>
+    <color name="colorTextSecondary">#64748B</color>
+    <color name="colorTextHint">#94A3B8</color>
+    <color name="colorDivider">#E2E8F0</color>
+    <color name="colorNavBackground">#FFFFFF</color>
+    <color name="colorSearchBg">#FFFFFF</color>
+    <color name="colorRowBg">#F8FAFC</color>
+
+    <!-- Карточки квиза - светлая -->
+    <color name="colorQuizCapitalsBg">#E3F2FD</color>
+    <color name="colorQuizCapitalsText">#1565C0</color>
+    <color name="colorQuizCapitalsSubText">#1976D2</color>
+    <color name="colorQuizCapitalsArrow">#90CAF9</color>
+
+    <color name="colorQuizFlagsBg">#E8F5E9</color>
+    <color name="colorQuizFlagsText">#2E7D32</color>
+    <color name="colorQuizFlagsSubText">#388E3C</color>
+    <color name="colorQuizFlagsArrow">#A5D6A7</color>
+
+    <color name="colorQuizCurrencyBg">#FFF3E0</color>
+    <color name="colorQuizCurrencyText">#EF6C00</color>
+    <color name="colorQuizCurrencySubText">#F57C00</color>
+    <color name="colorQuizCurrencyArrow">#FFCC80</color>
+
+    <color name="colorQuizFavoritesBg">#F3E5F5</color>
+    <color name="colorQuizFavoritesText">#7B1FA2</color>
+    <color name="colorQuizFavoritesSubText">#8E24AA</color>
+    <color name="colorQuizFavoritesArrow">#CE93D8</color>
+
+    <!-- Фиксированные (не меняются) -->
+    <color name="colorPrimary">#6366F1</color>
+    <color name="colorPrimaryDark">#4F46E5</color>
+    <color name="colorAccent">#F59E0B</color>
+    <color name="colorGreen">#10B981</color>
+    <color name="colorBlue">#3B82F6</color>
+    <color name="colorOrange">#F97316</color>
+    <color name="colorNoteBackground">#FFFBEB</color>
+    <color name="colorNoteTitle">#92400E</color>
 </resources>

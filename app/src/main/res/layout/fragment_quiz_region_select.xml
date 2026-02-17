@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F8FAFC">
+    android:background="@color/colorBackground">
 
     <!-- Шапка -->
     <LinearLayout
@@ -30,24 +30,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Выберите континент"
+            android:text="Выберите регион"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:layout_marginStart="12dp"/>
     </LinearLayout>
 
-    <!-- Сетка континентов -->
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp">
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Сетка 2x3 -->
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:columnCount="2"
             android:alignmentMode="alignMargins">
 
@@ -59,8 +59,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -73,15 +73,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🇪🇺"
-                        android:textSize="56sp"/>
+                        android:textSize="52sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Европа"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/colorTextPrimary"
                         android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -94,8 +94,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -108,15 +108,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🌏"
-                        android:textSize="56sp"/>
+                        android:textSize="52sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Азия"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/colorTextPrimary"
                         android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -129,8 +129,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -143,15 +143,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🌍"
-                        android:textSize="56sp"/>
+                        android:textSize="52sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Африка"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/colorTextPrimary"
                         android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -164,8 +164,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -178,15 +178,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🇨🇦"
-                        android:textSize="56sp"/>
+                        android:textSize="52sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Сев. Америка"
-                        android:textSize="15sp"
+                        android:text="Северная Америка"
+                        android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/colorTextPrimary"
                         android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -199,8 +199,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -213,15 +213,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🇧🇷"
-                        android:textSize="56sp"/>
+                        android:textSize="52sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Юж. Америка"
-                        android:textSize="15sp"
+                        android:text="Южная Америка"
+                        android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="#1E293B"
+                        android:textColor="@color/colorTextPrimary"
                         android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -234,8 +234,8 @@
                 android:layout_columnWeight="1"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -248,55 +248,56 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="🇦🇺"
-                        android:textSize="56sp"/>
+                        android:textSize="52sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Австралия"
-                        android:textSize="16sp"
+                        android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#1E293B"
-                        android:layout_marginTop="8dp"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Все страны мира -->
-            <androidx.cardview.widget.CardView
-                android:id="@+id/quizAllWorld"
-                android:layout_width="0dp"
-                android:layout_height="140dp"
-                android:layout_columnWeight="1"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#6366F1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🌍"
-                        android:textSize="56sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Все страны"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/colorTextPrimary"
                         android:layout_marginTop="8dp"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         </GridLayout>
-    </ScrollView>
 
+        <!-- Все страны по центру внизу -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/quizAllWorld"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#6366F1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingHorizontal="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌍"
+                    android:textSize="28sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Все страны мира"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginStart="12dp"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 </LinearLayout>

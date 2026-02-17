@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8FAFC">
+    android:background="@color/colorBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Шапка -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +40,6 @@
                 android:layout_marginStart="12dp"/>
         </LinearLayout>
 
-        <!-- Контент -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +53,7 @@
                 android:text="🎨 Внешний вид"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#1E293B"
+                android:textColor="@color/colorTextPrimary"
                 android:layout_marginBottom="12dp"/>
 
             <androidx.cardview.widget.CardView
@@ -64,7 +62,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -84,7 +82,7 @@
                             android:layout_weight="1"
                             android:text="🌙 Темная тема"
                             android:textSize="15sp"
-                            android:textColor="#1E293B"/>
+                            android:textColor="@color/colorTextPrimary"/>
 
                         <Switch
                             android:id="@+id/switchDarkTheme"
@@ -101,7 +99,7 @@
                 android:text="🗂️ Данные"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#1E293B"
+                android:textColor="@color/colorTextPrimary"
                 android:layout_marginBottom="12dp"/>
 
             <androidx.cardview.widget.CardView
@@ -110,7 +108,7 @@
                 android:layout_marginBottom="24dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -118,7 +116,6 @@
                     android:orientation="vertical"
                     android:padding="4dp">
 
-                    <!-- Сбросить прогресс -->
                     <LinearLayout
                         android:id="@+id/btnResetProgress"
                         android:layout_width="match_parent"
@@ -127,30 +124,27 @@
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
                         android:background="?attr/selectableItemBackground">
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="🔄 Сбросить прогресс"
                             android:textSize="15sp"
-                            android:textColor="#1E293B"/>
-
+                            android:textColor="@color/colorTextPrimary"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="24sp"
-                            android:textColor="#CBD5E1"/>
+                            android:textColor="@color/colorTextSecondary"/>
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E2E8F0"
+                        android:background="@color/colorDivider"
                         android:layout_marginHorizontal="16dp"/>
 
-                    <!-- Удалить заметки -->
                     <LinearLayout
                         android:id="@+id/btnDeleteNotes"
                         android:layout_width="match_parent"
@@ -159,30 +153,27 @@
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
                         android:background="?attr/selectableItemBackground">
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="📝 Удалить все заметки"
                             android:textSize="15sp"
-                            android:textColor="#1E293B"/>
-
+                            android:textColor="@color/colorTextPrimary"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="24sp"
-                            android:textColor="#CBD5E1"/>
+                            android:textColor="@color/colorTextSecondary"/>
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-                        android:background="#E2E8F0"
+                        android:background="@color/colorDivider"
                         android:layout_marginHorizontal="16dp"/>
 
-                    <!-- Удалить избранное -->
                     <LinearLayout
                         android:id="@+id/btnDeleteFavorites"
                         android:layout_width="match_parent"
@@ -191,21 +182,19 @@
                         android:gravity="center_vertical"
                         android:paddingHorizontal="16dp"
                         android:background="?attr/selectableItemBackground">
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="⭐ Удалить избранное"
                             android:textSize="15sp"
-                            android:textColor="#1E293B"/>
-
+                            android:textColor="@color/colorTextPrimary"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="›"
                             android:textSize="24sp"
-                            android:textColor="#CBD5E1"/>
+                            android:textColor="@color/colorTextSecondary"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -217,7 +206,7 @@
                 android:text="ℹ️ Информация"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="#1E293B"
+                android:textColor="@color/colorTextPrimary"
                 android:layout_marginBottom="12dp"/>
 
             <androidx.cardview.widget.CardView
@@ -226,7 +215,7 @@
                 android:layout_marginBottom="80dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                app:cardBackgroundColor="@color/colorCardBackground">
 
                 <LinearLayout
                     android:id="@+id/btnAbout"
@@ -236,21 +225,19 @@
                     android:gravity="center_vertical"
                     android:paddingHorizontal="16dp"
                     android:background="?attr/selectableItemBackground">
-
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="📱 О приложении"
                         android:textSize="15sp"
-                        android:textColor="#1E293B"/>
-
+                        android:textColor="@color/colorTextPrimary"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="›"
                         android:textSize="24sp"
-                        android:textColor="#CBD5E1"/>
+                        android:textColor="@color/colorTextSecondary"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

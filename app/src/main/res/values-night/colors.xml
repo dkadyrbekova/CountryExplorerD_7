@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Тёмная тема -->
+    <color name="colorBackground">#0F172A</color>
+    <color name="colorSurface">#1E293B</color>
+    <color name="colorCardBackground">#1E293B</color>
+    <color name="colorTextPrimary">#F1F5F9</color>
+    <color name="colorTextSecondary">#94A3B8</color>
+    <color name="colorTextHint">#475569</color>
+    <color name="colorDivider">#334155</color>
+    <color name="colorNavBackground">#1E293B</color>
+    <color name="colorSearchBg">#1E293B</color>
+    <color name="colorRowBg">#0F172A</color>
+
+    <!-- Карточки квиза - тёмная -->
+    <color name="colorQuizCapitalsBg">#1E3A5F</color>
+    <color name="colorQuizCapitalsText">#90CAF9</color>
+    <color name="colorQuizCapitalsSubText">#64B5F6</color>
+    <color name="colorQuizCapitalsArrow">#42A5F5</color>
+
+    <color name="colorQuizFlagsBg">#1B3A2D</color>
+    <color name="colorQuizFlagsText">#81C784</color>
+    <color name="colorQuizFlagsSubText">#66BB6A</color>
+    <color name="colorQuizFlagsArrow">#4CAF50</color>
+
+    <color name="colorQuizCurrencyBg">#3E2A00</color>
+    <color name="colorQuizCurrencyText">#FFB74D</color>
+    <color name="colorQuizCurrencySubText">#FFA726</color>
+    <color name="colorQuizCurrencyArrow">#FF9800</color>
+
+    <color name="colorQuizFavoritesBg">#2D1B3D</color>
+    <color name="colorQuizFavoritesText">#CE93D8</color>
+    <color name="colorQuizFavoritesSubText">#BA68C8</color>
+    <color name="colorQuizFavoritesArrow">#AB47BC</color>
+    <!-- Заметки тёмная -->
+    <color name="colorNoteBackground">#2D2010</color>
+    <color name="colorNoteTitle">#FCD34D</color>
+</resources>
