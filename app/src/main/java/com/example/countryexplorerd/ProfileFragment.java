@@ -14,9 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryNote;
+// УДАЛИЛА импорт .models.FavoriteCountry, так как он теперь в основном пакете
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,40 +33,41 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Используем твой XML файл
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Инициализация элементов
+        // 1. Связываем UI (IDs из твоего XML)
         tvStatsCountries = view.findViewById(R.id.tvStatsCountries);
         tvStatsCapitals = view.findViewById(R.id.tvStatsCapitals);
         tvStatsFlags = view.findViewById(R.id.tvStatsFlags);
         tvStatsCurrency = view.findViewById(R.id.tvStatsCurrency);
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
-        rvNotes = view.findViewById(R.id.rvNotes);
+        rvNotes = view.findViewById(R.id.rvNotes); // Убедись, что добавила этот ID в XML, если его там нет
 
         tvEmptyFavorites = view.findViewById(R.id.tvEmptyFavorites);
-        tvEmptyNotes = view.findViewById(R.id.tvEmptyNotes);
         tvFavCount = view.findViewById(R.id.tvFavCount);
 
-        // Настройка списков
+        // 2. Настройка списков
         rvFavorites.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        rvNotes.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (rvNotes != null) {
+            rvNotes.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
 
-        // MVVM: Получаем ViewModel
+        // 3. MVVM
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
 
-        // Загружаем данные
+        // 4. Загрузка данных
         loadStatistics();
         loadFavorites();
         loadNotes();
 
-        // Обработчик перехода в настройки
+        // 5. Обработчик настроек
         LinearLayout btnSettings = view.findViewById(R.id.btnSettings);
         if (btnSettings != null) {
             btnSettings.setOnClickListener(v -> {
-                SettingsFragment settingsFragment = new SettingsFragment();
                 getParentFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, settingsFragment)
+                        .replace(R.id.fragment_container, new SettingsFragment())
                         .addToBackStack(null)
                         .commit();
             });
@@ -76,30 +80,26 @@ public class ProfileFragment extends Fragment {
         SharedPreferences prefs = requireContext().getSharedPreferences("UserProgress", Context.MODE_PRIVATE);
 
         viewModel.getCountries().observe(getViewLifecycleOwner(), countries -> {
-            if (countries != null) {
-                int totalCountries = countries.size();
-
-                int learnedCapitals = 0;
-                int learnedFlags = 0;
-                int learnedCurrency = 0;
+            if (countries != null && !countries.isEmpty()) {
+                int total = countries.size();
+                int caps = 0, flags = 0, curs = 0;
 
                 for (Country c : countries) {
-                    if (prefs.getBoolean("capitals_" + c.getName(), false)) learnedCapitals++;
-                    if (prefs.getBoolean("flags_" + c.getName(), false)) learnedFlags++;
-                    if (prefs.getBoolean("currency_" + c.getName(), false)) learnedCurrency++;
+                    if (prefs.getBoolean("capitals_" + c.getName(), false)) caps++;
+                    if (prefs.getBoolean("flags_" + c.getName(), false)) flags++;
+                    if (prefs.getBoolean("currency_" + c.getName(), false)) curs++;
                 }
 
-                tvStatsCountries.setText(totalCountries + " стран");
-                tvStatsCapitals.setText(learnedCapitals + "/" + totalCountries);
-                tvStatsFlags.setText(learnedFlags + "/" + totalCountries);
-                tvStatsCurrency.setText(learnedCurrency + "/" + totalCountries);
+                tvStatsCountries.setText(total + " стран");
+                tvStatsCapitals.setText(caps + "/" + total);
+                tvStatsFlags.setText(flags + "/" + total);
+                tvStatsCurrency.setText(curs + "/" + total);
             }
         });
     }
 
     private void loadFavorites() {
         viewModel.loadFavorites();
-
         viewModel.getFavorites().observe(getViewLifecycleOwner(), favorites -> {
             if (favorites == null || favorites.isEmpty()) {
                 tvEmptyFavorites.setVisibility(View.VISIBLE);
@@ -110,20 +110,18 @@ public class ProfileFragment extends Fragment {
                 rvFavorites.setVisibility(View.VISIBLE);
                 tvFavCount.setText("(" + favorites.size() + ")");
 
-                viewModel.getCountries().observe(getViewLifecycleOwner(), countries -> {
-                    if (countries != null) {
-                        List<Country> favCountries = new ArrayList<>();
-                        for (FavoriteCountry fav : favorites) {
-                            for (Country c : countries) {
-                                if (c.getName().equals(fav.getCountryName())) {
-                                    favCountries.add(c);
+                viewModel.getCountries().observe(getViewLifecycleOwner(), allCountries -> {
+                    if (allCountries != null) {
+                        List<Country> favList = new ArrayList<>();
+                        for (FavoriteCountry f : favorites) {
+                            for (Country c : allCountries) {
+                                if (c.getName().equals(f.getCountryName())) {
+                                    favList.add(c);
                                     break;
                                 }
                             }
                         }
-
-                        FavoritesAdapter adapter = new FavoritesAdapter(favCountries);
-                        rvFavorites.setAdapter(adapter);
+                        rvFavorites.setAdapter(new FavoritesAdapter(favList));
                     }
                 });
             }
@@ -132,117 +130,72 @@ public class ProfileFragment extends Fragment {
 
     private void loadNotes() {
         viewModel.loadNotes();
-
         viewModel.getNotes().observe(getViewLifecycleOwner(), notes -> {
+            if (rvNotes == null) return;
+
             if (notes == null || notes.isEmpty()) {
-                tvEmptyNotes.setVisibility(View.VISIBLE);
                 rvNotes.setVisibility(View.GONE);
             } else {
-                tvEmptyNotes.setVisibility(View.GONE);
                 rvNotes.setVisibility(View.VISIBLE);
-
-                NotesAdapter adapter = new NotesAdapter(notes);
-                rvNotes.setAdapter(adapter);
+                rvNotes.setAdapter(new NotesAdapter(notes));
             }
         });
     }
 
-    // Адаптер для избранных
-    private class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
-        private List<Country> countries;
+    // --- АДАПТЕРЫ (Внутренние классы) ---
 
-        FavoritesAdapter(List<Country> countries) {
-            this.countries = countries;
-        }
+    private class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
+        private final List<Country> list;
+        FavoritesAdapter(List<Country> list) { this.list = list; }
 
         @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_favorite_mini, parent, false);
-            return new ViewHolder(view);
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup p, int vt) {
+            return new ViewHolder(LayoutInflater.from(p.getContext()).inflate(R.layout.item_favorite_mini, p, false));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Country country = countries.get(position);
-            holder.flag.setText(country.getFlag());
-            holder.name.setText(country.getName());
-
-            holder.itemView.setOnClickListener(v -> {
-                if (getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).openDetails(country);
-                }
+        public void onBindViewHolder(@NonNull ViewHolder h, int pos) {
+            Country c = list.get(pos);
+            h.flag.setText(c.getFlag());
+            h.name.setText(c.getName());
+            h.itemView.setOnClickListener(v -> {
+                if (getActivity() instanceof MainActivity) ((MainActivity) getActivity()).openDetails(c);
             });
         }
 
         @Override
-        public int getItemCount() {
-            return countries.size();
-        }
+        public int getItemCount() { return list.size(); }
 
         class ViewHolder extends RecyclerView.ViewHolder {
             TextView flag, name;
-
-            ViewHolder(View v) {
-                super(v);
-                flag = v.findViewById(R.id.tvFavFlag);
-                name = v.findViewById(R.id.tvFavName);
-            }
+            ViewHolder(View v) { super(v); flag = v.findViewById(R.id.tvFavFlag); name = v.findViewById(R.id.tvFavName); }
         }
     }
 
-    // Адаптер для заметок
     private class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
-        private List<CountryNote> notes;
-
-        NotesAdapter(List<CountryNote> notes) {
-            this.notes = notes;
-        }
+        private final List<CountryNote> notes;
+        NotesAdapter(List<CountryNote> notes) { this.notes = notes; }
 
         @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_note, parent, false);
-            return new ViewHolder(view);
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup p, int vt) {
+            return new ViewHolder(LayoutInflater.from(p.getContext()).inflate(R.layout.item_note, p, false));
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            CountryNote note = notes.get(position);
-            holder.countryName.setText(note.getCountryName());
-            holder.noteText.setText(note.getNoteText());
-
-            holder.itemView.setOnClickListener(v -> {
-                viewModel.getCountries().observe(getViewLifecycleOwner(), countries -> {
-                    if (countries != null) {
-                        for (Country c : countries) {
-                            if (c.getName().equals(note.getCountryName())) {
-                                if (getActivity() instanceof MainActivity) {
-                                    ((MainActivity) getActivity()).openDetails(c);
-                                }
-                                break;
-                            }
-                        }
-                    }
-                });
-            });
+        public void onBindViewHolder(@NonNull ViewHolder h, int pos) {
+            CountryNote n = notes.get(pos);
+            h.country.setText(n.getCountryName());
+            h.text.setText(n.getNoteText());
         }
 
         @Override
-        public int getItemCount() {
-            return notes.size();
-        }
+        public int getItemCount() { return notes.size(); }
 
         class ViewHolder extends RecyclerView.ViewHolder {
-            TextView countryName, noteText;
-
-            ViewHolder(View v) {
-                super(v);
-                countryName = v.findViewById(R.id.tvNoteCountry);
-                noteText = v.findViewById(R.id.tvNoteText);
-            }
+            TextView country, text;
+            ViewHolder(View v) { super(v); country = v.findViewById(R.id.tvNoteCountry); text = v.findViewById(R.id.tvNoteText); }
         }
     }
 }

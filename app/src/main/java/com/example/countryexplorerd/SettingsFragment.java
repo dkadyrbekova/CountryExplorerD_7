@@ -40,6 +40,8 @@ public class SettingsFragment extends Fragment {
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
+            // ✅ ПЕРЕЗАПУСКАЕМ АКТИВИТИ ДЛЯ ПРИМЕНЕНИЯ ТЕМЫ
+            requireActivity().recreate();
         });
 
         // Сбросить прогресс

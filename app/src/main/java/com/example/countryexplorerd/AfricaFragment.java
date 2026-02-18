@@ -1,13 +1,11 @@
 package com.example.countryexplorerd;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,9 +21,8 @@ public class AfricaFragment extends Fragment {
     private CountryAdapter adapter;
     private CountryViewModel viewModel;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_africa, container, false);
 
         ImageButton btnBack = view.findViewById(R.id.btnBackAfrica);
@@ -34,29 +31,22 @@ public class AfricaFragment extends Fragment {
         }
 
         RecyclerView recyclerView = view.findViewById(R.id.rvAfrica);
-        if (recyclerView != null) {
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-            adapter = new CountryAdapter(countries);
-            recyclerView.setAdapter(adapter);
-        }
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        adapter = new CountryAdapter(countries);
+        recyclerView.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
 
         viewModel.getCountries().observe(getViewLifecycleOwner(), allCountries -> {
-            Log.d("AfricaFragment", "Data received: " + (allCountries != null ? allCountries.size() : "null"));
-
-            if (allCountries != null && !allCountries.isEmpty()) {
+            if (allCountries != null) {
                 countries.clear();
                 for (Country c : allCountries) {
                     if ("Africa".equalsIgnoreCase(c.getRegion())) {
                         countries.add(c);
                     }
                 }
-                Log.d("AfricaFragment", "Africa countries: " + countries.size());
-
-                if (adapter != null && recyclerView != null) {
-                    recyclerView.post(() -> adapter.notifyDataSetChanged());
-                }
+                adapter.notifyDataSetChanged();
             }
         });
 

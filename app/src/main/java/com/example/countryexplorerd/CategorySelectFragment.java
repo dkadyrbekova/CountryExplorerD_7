@@ -17,7 +17,6 @@ public class CategorySelectFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            // Получаем режим, выбранный на экране с картой
             currentMode = getArguments().getString("mode", "capitals");
         }
     }
@@ -27,21 +26,18 @@ public class CategorySelectFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category_select, container, false);
 
-        // Кнопка назад
         ImageButton btnBack = view.findViewById(R.id.btnBackToModes);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
         }
 
-        // Привязываем клики к карточкам из твоего XML
+        // ИСПРАВЛЕННЫЕ НАЗВАНИЯ РЕГИОНОВ (как в API)
         setupClick(view.findViewById(R.id.selectEurope), "Europe");
         setupClick(view.findViewById(R.id.selectAsia), "Asia");
         setupClick(view.findViewById(R.id.selectAfrica), "Africa");
-        setupClick(view.findViewById(R.id.selectNAmerica), "Americas"); // Для API это обычно Americas
-        setupClick(view.findViewById(R.id.selectSAmerica), "Americas");
+        setupClick(view.findViewById(R.id.selectNAmerica), "North America");  // ← ИСПРАВЛЕНО
+        setupClick(view.findViewById(R.id.selectSAmerica), "South America");  // ← ИСПРАВЛЕНО
         setupClick(view.findViewById(R.id.selectAustralia), "Oceania");
-
-        // Кнопку btnAllCountries я удалила, так как её нет в твоем XML
 
         return view;
     }

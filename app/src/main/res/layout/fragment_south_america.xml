@@ -3,57 +3,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F9FAFB"
-    android:padding="16dp">
+    android:background="#FFFFFF">
 
-    <Button
-        android:id="@+id/btnRegionBack"
-        android:layout_width="60dp"
-        android:layout_height="48dp"
-        android:text="←"
-        android:textSize="24sp"
-        android:backgroundTint="#DFE6ED"
-        android:textColor="#2D3436"
-        android:insetTop="0dp"
-        android:insetBottom="0dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Южная Америка"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:textColor="#2D3436"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="10dp">
 
-    <!-- ProgressBar для загрузки -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:visibility="visible"/>
+        <ImageButton
+            android:id="@+id/btnBackSA"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            android:tint="#C2185B" />
 
-    <!-- Текст когда список пуст -->
-    <TextView
-        android:id="@+id/emptyText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Загрузка данных..."
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:textSize="16sp"
-        android:textColor="#666"
-        android:visibility="gone"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Южная Америка"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
+            android:textColor="#C2185B"/>
+    </LinearLayout>
 
-    <!-- Список стран -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSAmerica"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:visibility="gone"/>
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:clipToPadding="false"/>
 
 </LinearLayout>
