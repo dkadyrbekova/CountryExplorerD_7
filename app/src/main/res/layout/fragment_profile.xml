@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Шапка профиля -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,9 +25,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="👤 Мой профиль"
-                android:textSize="28sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#FFFFFF"/>
+                android:textColor="#E0E7FF"/>
+
+            <EditText
+                android:id="@+id/etUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ваше имя"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#C7D2FE"
+                android:background="@android:color/transparent"
+                android:inputType="textPersonName|textCapWords"
+                android:maxLines="1"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="0dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -37,12 +53,14 @@
                 android:layout_marginTop="4dp"/>
         </LinearLayout>
 
+        <!-- Контент -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp">
 
+            <!-- Статистика обучения -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,12 +84,14 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
+                    <!-- Общий прогресс -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:paddingVertical="8dp">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -79,6 +99,7 @@
                             android:text="🌍 Общий прогресс"
                             android:textSize="15sp"
                             android:textColor="@color/colorTextSecondary"/>
+
                         <TextView
                             android:id="@+id/tvStatsCountries"
                             android:layout_width="wrap_content"
@@ -89,14 +110,19 @@
                             android:textColor="#6366F1"/>
                     </LinearLayout>
 
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorDivider"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorDivider"/>
 
+                    <!-- Столицы -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:paddingVertical="8dp">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -104,6 +130,7 @@
                             android:text="🏛️ Столицы"
                             android:textSize="15sp"
                             android:textColor="@color/colorTextSecondary"/>
+
                         <TextView
                             android:id="@+id/tvStatsCapitals"
                             android:layout_width="wrap_content"
@@ -114,14 +141,19 @@
                             android:textColor="#3B82F6"/>
                     </LinearLayout>
 
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorDivider"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorDivider"/>
 
+                    <!-- Флаги -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:paddingVertical="8dp">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -129,6 +161,7 @@
                             android:text="🚩 Флаги"
                             android:textSize="15sp"
                             android:textColor="@color/colorTextSecondary"/>
+
                         <TextView
                             android:id="@+id/tvStatsFlags"
                             android:layout_width="wrap_content"
@@ -139,14 +172,19 @@
                             android:textColor="#10B981"/>
                     </LinearLayout>
 
-                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/colorDivider"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorDivider"/>
 
+                    <!-- Валюты -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:paddingVertical="8dp">
+
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -154,6 +192,7 @@
                             android:text="💰 Валюты"
                             android:textSize="15sp"
                             android:textColor="@color/colorTextSecondary"/>
+
                         <TextView
                             android:id="@+id/tvStatsCurrency"
                             android:layout_width="wrap_content"
@@ -166,12 +205,14 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Избранные страны -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_marginBottom="12dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -180,6 +221,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorTextPrimary"/>
+
                 <TextView
                     android:id="@+id/tvFavCount"
                     android:layout_width="wrap_content"
@@ -196,26 +238,34 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/colorCardBackground">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvFavorites"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        android:clipToPadding="false"/>
+
                     <TextView
                         android:id="@+id/tvEmptyFavorites"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Нет избранных стран"
-                        android:visibility="gone"
-                        android:padding="16dp"/>
+                        android:text="Нет избранных стран\nДобавьте страны в избранное ⭐"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorTextSecondary"
+                        android:gravity="center"
+                        android:padding="32dp"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Мои заметки -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -232,39 +282,50 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp"
                 app:cardBackgroundColor="@color/colorCardBackground">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvNotes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="8dp"/>
+
                     <TextView
                         android:id="@+id/tvEmptyNotes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Нет заметок"
-                        android:visibility="gone"
-                        android:padding="16dp"/>
+                        android:text="Нет заметок\nДобавьте заметки к странам 📝"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorTextSecondary"
+                        android:gravity="center"
+                        android:padding="32dp"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Настройки -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="⚙️ Настройки"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:textColor="@color/colorTextPrimary"
                 android:layout_marginBottom="12dp"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="80dp"
-                app:cardCornerRadius="12dp">
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
+
                 <LinearLayout
                     android:id="@+id/btnSettings"
                     android:layout_width="match_parent"
@@ -275,17 +336,21 @@
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="⚙️ Открыть настройки"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp"
+                        android:textColor="@color/colorTextPrimary"/>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="›"
-                        android:textSize="24sp"/>
+                        android:textSize="24sp"
+                        android:textColor="@color/colorTextSecondary"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

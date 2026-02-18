@@ -3,9 +3,12 @@ package com.example.countryexplorerd;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -23,16 +26,19 @@ import java.util.List;
 public class ProfileFragment extends Fragment {
 
     private CountryViewModel viewModel;
-    private TextView tvStatsCapitals, tvStatsFlags, tvStatsCurrency;  // ← УБРАЛ tvStatsCountries
+    private TextView tvStatsCountries, tvStatsCapitals, tvStatsFlags, tvStatsCurrency;
     private RecyclerView rvFavorites, rvNotes;
     private TextView tvEmptyFavorites, tvEmptyNotes, tvFavCount;
+    private EditText etUserName;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Инициализация элементов (БЕЗ tvStatsCountries)
+        // Инициализация элементов
+        etUserName = view.findViewById(R.id.etUserName);
+        tvStatsCountries = view.findViewById(R.id.tvStatsCountries);
         tvStatsCapitals = view.findViewById(R.id.tvStatsCapitals);
         tvStatsFlags = view.findViewById(R.id.tvStatsFlags);
         tvStatsCurrency = view.findViewById(R.id.tvStatsCurrency);
@@ -48,13 +54,29 @@ public class ProfileFragment extends Fragment {
         rvFavorites.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rvNotes.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // MVVM: Получаем ViewModel
+        // MVVM
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
 
         // Загружаем данные
+        loadUserName();
         loadStatistics();
         loadFavorites();
         loadNotes();
+
+        // Сохранение имени при изменении
+        etUserName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                SharedPreferences prefs = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
+                prefs.edit().putString("user_name", s.toString().trim()).apply();
+            }
+        });
 
         // Обработчик перехода в настройки
         LinearLayout btnSettings = view.findViewById(R.id.btnSettings);
@@ -69,6 +91,12 @@ public class ProfileFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void loadUserName() {
+        SharedPreferences prefs = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "");
+        etUserName.setText(userName);
     }
 
     private void loadStatistics() {
@@ -88,12 +116,13 @@ public class ProfileFragment extends Fragment {
                     if (prefs.getBoolean("currency_" + c.getName(), false)) learnedCurrency++;
                 }
 
-                // ✅ ПОКАЗЫВАЕМ ПРОЦЕНТЫ
+                // Общий прогресс (средний % по всем категориям)
                 int percentCapitals = (totalCountries > 0) ? (learnedCapitals * 100) / totalCountries : 0;
                 int percentFlags = (totalCountries > 0) ? (learnedFlags * 100) / totalCountries : 0;
                 int percentCurrency = (totalCountries > 0) ? (learnedCurrency * 100) / totalCountries : 0;
+                int averagePercent = (percentCapitals + percentFlags + percentCurrency) / 3;
 
-                // БЕЗ tvStatsCountries
+                tvStatsCountries.setText(averagePercent + "%");
                 tvStatsCapitals.setText(percentCapitals + "%");
                 tvStatsFlags.setText(percentFlags + "%");
                 tvStatsCurrency.setText(percentCurrency + "%");
