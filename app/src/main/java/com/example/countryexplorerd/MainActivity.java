@@ -29,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // Загружаем тему перед super.onCreate
+        // ✅ Загружаем тему перед super.onCreate
         SharedPreferences prefs = getSharedPreferences("AppSettings", MODE_PRIVATE);
         boolean isDarkTheme = prefs.getBoolean("dark_theme", false);
+
         if (isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(item -> {
+
             Fragment selectedFragment = null;
             int id = item.getItemId();
 
@@ -66,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (selectedFragment != null) {
-                // Важно: не добавляем верхние разделы в back stack
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, selectedFragment)
                         .commit();
             }
+
             return true;
         });
 
@@ -80,12 +82,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDataFromPostman() {
+
         viewModel.getCountries().observe(this, countries -> {
             if (countries != null) {
                 regionCountries.clear();
                 regionCountries.addAll(countries);
             }
         });
+
         viewModel.getDetails().observe(this, details -> {
             if (details != null) {
                 detailedMap.clear();
@@ -98,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
         return regionCountries;
     }
 
-    // Открытие дочернего фрагмента DetailsFragment / FlashcardFragment
     public void openDetails(Country countryFromList) {
+
         Bundle b = new Bundle();
         b.putString("country_name", countryFromList.getName());
         b.putString("country_capital", countryFromList.getCapital());
@@ -117,16 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)   // Добавляем дочерний фрагмент в back stack
+                .addToBackStack(null)
                 .commit();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
     }
 }
