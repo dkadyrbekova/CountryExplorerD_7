@@ -2,16 +2,18 @@ package com.example.countryexplorerd;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.splashscreen.SplashScreen;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.room.Room;
+
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,17 +28,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // ✅ ЗАГРУЖАЕМ ТЕМУ ПЕРЕД ВСЕМ ОСТАЛЬНЫМ
+
+        // Загружаем тему перед super.onCreate
         SharedPreferences prefs = getSharedPreferences("AppSettings", MODE_PRIVATE);
         boolean isDarkTheme = prefs.getBoolean("dark_theme", false);
-
         if (isDarkTheme) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
-        SplashScreen.installSplashScreen(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (selectedFragment != null) {
+                // Важно: не добавляем верхние разделы в back stack
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, selectedFragment)
                         .commit();
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 regionCountries.addAll(countries);
             }
         });
-
         viewModel.getDetails().observe(this, details -> {
             if (details != null) {
                 detailedMap.clear();
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
         return regionCountries;
     }
 
+    // Открытие дочернего фрагмента DetailsFragment / FlashcardFragment
     public void openDetails(Country countryFromList) {
         Bundle b = new Bundle();
         b.putString("country_name", countryFromList.getName());
@@ -112,9 +114,19 @@ public class MainActivity extends AppCompatActivity {
 
         DetailsFragment fragment = new DetailsFragment();
         fragment.setArguments(b);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
+                .addToBackStack(null)   // Добавляем дочерний фрагмент в back stack
                 .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }
