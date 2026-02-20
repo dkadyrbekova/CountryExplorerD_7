@@ -3,7 +3,6 @@ package com.example.countryexplorerd;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,18 +22,15 @@ public class DetailsFragment extends Fragment {
 
     private String countryName;
     private EditText etNote;
-    private ImageButton btnFavorite; // Переменная для звезды
-    private boolean isFavorite = false; // Статус избранного
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Используем твой новый XML с кнопкой btnFavorite
+        // Загружаем XML (уже без кнопки избранного)
         View view = inflater.inflate(R.layout.fragment_details, container, false);
 
         // Привязка элементов интерфейса
         ImageButton btnBack = view.findViewById(R.id.btnBackDetails);
-        btnFavorite = view.findViewById(R.id.btnFavorite); // Привязываем звезду
 
         TextView tvFlag = view.findViewById(R.id.details_flag);
         TextView tvName = view.findViewById(R.id.details_name);
@@ -61,14 +57,7 @@ public class DetailsFragment extends Fragment {
             tvLanguage.setText(getArguments().getString("country_language", "Не указан"));
             tvInfo.setText(getArguments().getString("country_info", "Описание скоро появится..."));
 
-            // --- ЛОГИКА ИЗБРАННОГО ---
-            checkFavoriteStatus();
-
-            if (btnFavorite != null) {
-                btnFavorite.setOnClickListener(v -> toggleFavorite());
-            }
-
-            // --- ТВОЯ ЛОГИКА ЗАМЕТОК (БЕЗ ИЗМЕНЕНИЙ) ---
+            // Логика заметок
             loadNote();
 
             if (btnMap != null) {
@@ -110,38 +99,7 @@ public class DetailsFragment extends Fragment {
         return view;
     }
 
-    // Метод для проверки, добавлена ли страна в избранное
-    private void checkFavoriteStatus() {
-        SharedPreferences prefs = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE);
-        isFavorite = prefs.getBoolean(countryName, false);
-        updateFavoriteIcon();
-    }
-
-    // Метод для переключения избранного
-    private void toggleFavorite() {
-        isFavorite = !isFavorite;
-        SharedPreferences prefs = requireContext().getSharedPreferences("Favorites", Context.MODE_PRIVATE);
-        prefs.edit().putBoolean(countryName, isFavorite).apply();
-        updateFavoriteIcon();
-
-        String msg = isFavorite ? "Добавлено в избранное" : "Удалено";
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-
-    // Метод для обновления иконки звезды
-    private void updateFavoriteIcon() {
-        if (btnFavorite != null) {
-            if (isFavorite) {
-                btnFavorite.setImageResource(android.R.drawable.btn_star_big_on);
-                btnFavorite.setColorFilter(Color.YELLOW);
-            } else {
-                btnFavorite.setImageResource(android.R.drawable.btn_star_big_off);
-                btnFavorite.setColorFilter(Color.WHITE);
-            }
-        }
-    }
-
-    // --- ТВОИ ОРИГИНАЛЬНЫЕ МЕТОДЫ (БЕЗ ИЗМЕНЕНИЙ ЛОГИКИ) ---
+    // --- ЛОГИКА ЗАМЕТОК ---
 
     private void loadNote() {
         new Thread(() -> {
