@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:background="@color/colorBackground">
 
+    <!-- Шапка -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,12 +37,15 @@
             android:layout_marginStart="12dp"/>
     </LinearLayout>
 
+    <!-- Сетка континентов — занимает всё доступное место -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:scrollbars="none"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp">
+        android:paddingTop="20dp"
+        android:paddingBottom="8dp">
 
         <GridLayout
             android:layout_width="match_parent"
@@ -237,4 +241,21 @@
 
         </GridLayout>
     </ScrollView>
+
+    <!-- Кнопка автозапуска ВСЕХ стран — прибита к низу -->
+    <Button
+        android:id="@+id/btnAllCountries"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+        android:text="▶  Все страны мира"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#6366F1"
+        android:paddingHorizontal="36dp"
+        app:cornerRadius="28dp"/>
+
 </LinearLayout>

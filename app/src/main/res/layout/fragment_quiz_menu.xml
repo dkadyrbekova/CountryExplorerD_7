@@ -53,50 +53,13 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/colorQuizCapitalsBg">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🏛️"
-                        android:textSize="48sp"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Столицы"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorQuizCapitalsText"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Угадай столицы стран"
-                            android:textSize="13sp"
-                            android:textColor="@color/colorQuizCapitalsSubText"
-                            android:layout_marginTop="2dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🏛️" android:textSize="48sp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Столицы" android:textSize="20sp" android:textStyle="bold" android:textColor="@color/colorQuizCapitalsText"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Угадай столицы стран" android:textSize="13sp" android:textColor="@color/colorQuizCapitalsSubText" android:layout_marginTop="2dp"/>
                     </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="›"
-                        android:textSize="32sp"
-                        android:textColor="@color/colorQuizCapitalsArrow"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="32sp" android:textColor="@color/colorQuizCapitalsArrow"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -109,50 +72,13 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/colorQuizFlagsBg">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="🚩"
-                        android:textSize="48sp"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Флаги"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorQuizFlagsText"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Узнай страны по флагам"
-                            android:textSize="13sp"
-                            android:textColor="@color/colorQuizFlagsSubText"
-                            android:layout_marginTop="2dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🚩" android:textSize="48sp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Флаги" android:textSize="20sp" android:textStyle="bold" android:textColor="@color/colorQuizFlagsText"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Узнай страны по флагам" android:textSize="13sp" android:textColor="@color/colorQuizFlagsSubText" android:layout_marginTop="2dp"/>
                     </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="›"
-                        android:textSize="32sp"
-                        android:textColor="@color/colorQuizFlagsArrow"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="32sp" android:textColor="@color/colorQuizFlagsArrow"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -165,50 +91,13 @@
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/colorQuizCurrencyBg">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="💰"
-                        android:textSize="48sp"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Валюты"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorQuizCurrencyText"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Угадай валюты стран"
-                            android:textSize="13sp"
-                            android:textColor="@color/colorQuizCurrencySubText"
-                            android:layout_marginTop="2dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="💰" android:textSize="48sp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Валюты" android:textSize="20sp" android:textStyle="bold" android:textColor="@color/colorQuizCurrencyText"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Угадай валюты стран" android:textSize="13sp" android:textColor="@color/colorQuizCurrencySubText" android:layout_marginTop="2dp"/>
                     </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="›"
-                        android:textSize="32sp"
-                        android:textColor="@color/colorQuizCurrencyArrow"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="32sp" android:textColor="@color/colorQuizCurrencyArrow"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -217,53 +106,35 @@
                 android:id="@+id/cardQuizFavorites"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
                 app:cardBackgroundColor="@color/colorQuizFavoritesBg">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="⭐"
-                        android:textSize="48sp"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Избранное"
-                            android:textSize="20sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorQuizFavoritesText"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Только избранные страны"
-                            android:textSize="13sp"
-                            android:textColor="@color/colorQuizFavoritesSubText"
-                            android:layout_marginTop="2dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⭐" android:textSize="48sp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Избранное" android:textSize="20sp" android:textStyle="bold" android:textColor="@color/colorQuizFavoritesText"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Только избранные страны" android:textSize="13sp" android:textColor="@color/colorQuizFavoritesSubText" android:layout_marginTop="2dp"/>
                     </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="32sp" android:textColor="@color/colorQuizFavoritesArrow"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="›"
-                        android:textSize="32sp"
-                        android:textColor="@color/colorQuizFavoritesArrow"/>
+            <!-- Угадай регион — 5-й режим -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardQuizRegion"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#1A1A2E">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="20dp">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🌍" android:textSize="48sp"/>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Угадай регион" android:textSize="20sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="На каком континенте страна?" android:textSize="13sp" android:textColor="#AAAACC" android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="32sp" android:textColor="#6366F1"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

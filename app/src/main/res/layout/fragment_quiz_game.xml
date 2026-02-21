@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/quiz_background_gradient">
+    android:background="#6366F1">
 
     <!-- Шапка -->
     <LinearLayout
@@ -20,7 +20,7 @@
             android:layout_height="40dp"
             android:background="@drawable/button_circle_white"
             android:src="@android:drawable/ic_menu_revert"
-            android:tint="#FF6B6B"
+            android:tint="#6366F1"
             android:contentDescription="Назад"/>
 
         <TextView
@@ -41,7 +41,7 @@
             android:layout_height="40dp"
             android:background="@drawable/button_circle_white"
             android:src="@android:drawable/ic_media_pause"
-            android:tint="#4ECDC4"
+            android:tint="#6366F1"
             android:contentDescription="Пауза"/>
     </LinearLayout>
 
@@ -73,14 +73,12 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Жизни"
                 android:textSize="12sp"
                 android:textColor="#FFFFFFAA"/>
-
             <TextView
                 android:id="@+id/tvQuizLives"
                 android:layout_width="wrap_content"
@@ -96,14 +94,12 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Таймер"
                 android:textSize="12sp"
                 android:textColor="#FFFFFFAA"/>
-
             <TextView
                 android:id="@+id/tvQuizTimer"
                 android:layout_width="wrap_content"
@@ -121,14 +117,12 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Счёт"
                 android:textSize="12sp"
                 android:textColor="#FFFFFFAA"/>
-
             <TextView
                 android:id="@+id/tvQuizScore"
                 android:layout_width="wrap_content"
@@ -150,14 +144,14 @@
         android:text="🔥 3"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="#FF6B6B"
+        android:textColor="#FFD93D"
         android:background="@drawable/streak_badge"
         android:paddingHorizontal="16dp"
         android:paddingVertical="6dp"
         android:layout_marginBottom="8dp"
         android:visibility="gone"/>
 
-    <!-- Вопрос -->
+    <!-- Карточка вопроса -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -189,7 +183,7 @@
                 android:id="@+id/tvQuizQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Бразилия"
+                android:text=""
                 android:textSize="48sp"
                 android:textStyle="bold"
                 android:textColor="#2C3E50"
@@ -210,7 +204,7 @@
             android:id="@+id/btnAnswer1"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Бразилиа"
+            android:text=""
             android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="#2C3E50"
@@ -221,7 +215,7 @@
             android:id="@+id/btnAnswer2"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Рио-де-Жанейро"
+            android:text=""
             android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="#2C3E50"
@@ -232,7 +226,7 @@
             android:id="@+id/btnAnswer3"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Сан-Паулу"
+            android:text=""
             android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="#2C3E50"
@@ -243,7 +237,7 @@
             android:id="@+id/btnAnswer4"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Салвадор"
+            android:text=""
             android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="#2C3E50"

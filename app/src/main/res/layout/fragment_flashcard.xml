@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="#F9FAFB">
 
+    <!-- Шапка с кнопкой назад и счётчиком -->
     <RelativeLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
@@ -46,6 +47,7 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <!-- Карточка -->
     <androidx.cardview.widget.CardView
         android:id="@+id/flashcard"
         android:layout_width="match_parent"
@@ -100,28 +102,54 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
+    <!-- Нижняя панель: кнопки листания + кнопка автозапуска -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="60dp"
+        android:orientation="vertical"
         android:gravity="center">
 
-        <ImageButton
-            android:id="@+id/btnPrev"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginEnd="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_media_previous"
-            app:tint="#636E72" />
+        <!-- Кнопка автозапуска — видна только в режиме "Все страны" -->
+        <Button
+            android:id="@+id/btnAutoPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="⏸  Пауза"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#6366F1"
+            android:paddingHorizontal="32dp"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            app:cornerRadius="24dp"/>
 
-        <ImageButton
-            android:id="@+id/btnNext"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_media_next"
-            app:tint="#636E72" />
+        <!-- Кнопки Назад / Вперёд -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/btnPrev"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_previous"
+                app:tint="#636E72" />
+
+            <ImageButton
+                android:id="@+id/btnNext"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_next"
+                app:tint="#636E72" />
+        </LinearLayout>
     </LinearLayout>
+
 </RelativeLayout>

@@ -4,10 +4,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,17 +29,26 @@ public class FlashcardFragment extends Fragment {
     private int currentIndex = 0;
     private boolean isFront = true;
     private String mode, continent;
+    private boolean isAutoPlay = false; // режим автозапуска
+
+    // Handler для автозапуска
+    private final Handler autoPlayHandler = new Handler(Looper.getMainLooper());
+    private Runnable autoPlayRunnable;
 
     private TextView tvCounter, tvCardContent, tvHeader, tvPercent;
     private CardView flashcard;
     private Button btnLearned;
+    private Button btnAutoPlay; // кнопка паузы/старта
     private CountryViewModel viewModel;
+
+    // Задержки автозапуска (в миллисекундах)
+    private static final int DELAY_FRONT = 2000; // 2 сек показываем страну
+    private static final int DELAY_BACK  = 2000; // 2 сек показываем ответ
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            // Получаем данные, переданные из CategorySelectFragment
             mode = getArguments().getString("mode", "capitals");
             continent = getArguments().getString("continent", "");
         }
@@ -47,17 +59,23 @@ public class FlashcardFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_flashcard, container, false);
 
-        tvCounter = view.findViewById(R.id.tvCounter);
-        tvPercent = view.findViewById(R.id.tvPercent);
+        tvCounter    = view.findViewById(R.id.tvCounter);
+        tvPercent    = view.findViewById(R.id.tvPercent);
         tvCardContent = view.findViewById(R.id.tvCardContent);
-        tvHeader = view.findViewById(R.id.tvHeader);
-        flashcard = view.findViewById(R.id.flashcard);
-        btnLearned = view.findViewById(R.id.btnLearned);
+        tvHeader     = view.findViewById(R.id.tvHeader);
+        flashcard    = view.findViewById(R.id.flashcard);
+        btnLearned   = view.findViewById(R.id.btnLearned);
+        btnAutoPlay  = view.findViewById(R.id.btnAutoPlay);
 
-        // Кнопка назад в меню континентов
-        view.findViewById(R.id.btnBackToMenu).setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        // Кнопка назад
+        view.findViewById(R.id.btnBackToMenu).setOnClickListener(v -> {
+            stopAutoPlay();
+            getParentFragmentManager().popBackStack();
+        });
 
+        // Ручное листание — только если НЕ автозапуск
         view.findViewById(R.id.btnNext).setOnClickListener(v -> {
+            if (isAutoPlay) return;
             if (!countryList.isEmpty() && currentIndex < countryList.size() - 1) {
                 currentIndex++;
                 isFront = true;
@@ -66,6 +84,7 @@ public class FlashcardFragment extends Fragment {
         });
 
         view.findViewById(R.id.btnPrev).setOnClickListener(v -> {
+            if (isAutoPlay) return;
             if (!countryList.isEmpty() && currentIndex > 0) {
                 currentIndex--;
                 isFront = true;
@@ -73,7 +92,18 @@ public class FlashcardFragment extends Fragment {
             }
         });
 
-        flashcard.setOnClickListener(v -> flipCard());
+        // Ручной переворот — только если НЕ автозапуск
+        flashcard.setOnClickListener(v -> {
+            if (!isAutoPlay) flipCard();
+        });
+
+        // Показываем кнопку автозапуска только в режиме "Все страны"
+        if ("All".equalsIgnoreCase(continent)) {
+            btnAutoPlay.setVisibility(View.VISIBLE);
+            btnAutoPlay.setOnClickListener(v -> toggleAutoPlay());
+        } else {
+            btnAutoPlay.setVisibility(View.GONE);
+        }
 
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
         viewModel.getCountries().observe(getViewLifecycleOwner(), allCountries -> {
@@ -81,34 +111,102 @@ public class FlashcardFragment extends Fragment {
                 filterData(allCountries);
                 updateUI();
                 updateProgressPercent();
+
+                // Если режим "Все страны" — запускаем автозапуск сразу
+                if ("All".equalsIgnoreCase(continent)) {
+                    startAutoPlay();
+                }
             }
         });
 
         return view;
     }
 
-    // ИСПРАВЛЕННЫЙ МЕТОД ФИЛЬТРАЦИИ
+    // ─── АВТОЗАПУСК ──────────────────────────────────────────────
+
+    private void toggleAutoPlay() {
+        if (isAutoPlay) {
+            stopAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    }
+
+    private void startAutoPlay() {
+        isAutoPlay = true;
+        btnAutoPlay.setText("⏸  Пауза");
+
+        // Если карточка сейчас на обратной стороне — сначала возвращаем на лицо
+        if (!isFront) {
+            isFront = true;
+            updateUI();
+        }
+
+        scheduleNextStep();
+    }
+
+    private void stopAutoPlay() {
+        isAutoPlay = false;
+        if (btnAutoPlay != null) btnAutoPlay.setText("▶  Автозапуск");
+        autoPlayHandler.removeCallbacks(autoPlayRunnable != null ? autoPlayRunnable : () -> {});
+    }
+
+    private void scheduleNextStep() {
+        if (!isAutoPlay || countryList.isEmpty()) return;
+
+        autoPlayRunnable = () -> {
+            if (!isAdded() || countryList.isEmpty()) return;
+
+            if (isFront) {
+                // Переворачиваем карточку
+                flipCard();
+                // Через DELAY_BACK переходим к следующей
+                scheduleNextStep();
+            } else {
+                // Переходим к следующей стране
+                if (currentIndex < countryList.size() - 1) {
+                    currentIndex++;
+                } else {
+                    // Дошли до конца — начинаем сначала
+                    currentIndex = 0;
+                    Collections.shuffle(countryList); // перемешиваем заново
+                }
+                isFront = true;
+                updateUI();
+                // Через DELAY_FRONT переворачиваем
+                scheduleNextStep();
+            }
+        };
+
+        int delay = isFront ? DELAY_FRONT : DELAY_BACK;
+        autoPlayHandler.postDelayed(autoPlayRunnable, delay);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        stopAutoPlay();
+    }
+
+    // ─── ФИЛЬТРАЦИЯ ───────────────────────────────────────────────
+
     private void filterData(List<Country> all) {
         countryList.clear();
         for (Country c : all) {
             boolean matchesContinent = false;
-
-            // Если континент не выбран или выбраны "Все страны"
             if (continent == null || continent.isEmpty() || "All".equalsIgnoreCase(continent)) {
                 matchesContinent = true;
-            }
-            // Иначе проверяем совпадение региона (игнорируя регистр)
-            else if (c.getRegion() != null && c.getRegion().equalsIgnoreCase(continent)) {
+            } else if (c.getRegion() != null && c.getRegion().equalsIgnoreCase(continent)) {
                 matchesContinent = true;
             }
-
             if (matchesContinent) {
                 countryList.add(c);
             }
         }
-        // Перемешиваем список для обучения
         Collections.shuffle(countryList);
     }
+
+    // ─── UI ───────────────────────────────────────────────────────
 
     private void updateUI() {
         if (countryList.isEmpty()) {
@@ -144,10 +242,12 @@ public class FlashcardFragment extends Fragment {
                     tvHeader.setText("ВАЛЮТА");
                     tvCardContent.setTextSize(34);
                 }
-
                 flashcard.setCardBackgroundColor(Color.parseColor("#FFFDE7"));
-                btnLearned.setVisibility(View.VISIBLE);
-                updateLearnedButtonDesign(c.getName());
+                // Кнопку "Выучить" в автозапуске не показываем — мешает
+                if (!isAutoPlay) {
+                    btnLearned.setVisibility(View.VISIBLE);
+                    updateLearnedButtonDesign(c.getName());
+                }
             } else {
                 updateUI();
             }

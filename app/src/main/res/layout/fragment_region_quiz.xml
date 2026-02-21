@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#6366F1">
+
+    <!-- Шапка -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnRegionBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/button_circle_white"
+            android:src="@android:drawable/ic_menu_revert"
+            android:tint="#6366F1"
+            android:contentDescription="Назад"/>
+
+        <TextView
+            android:id="@+id/tvRegionCounter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Вопрос 1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tvRegionScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⭐ 0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFD93D"/>
+    </LinearLayout>
+
+    <!-- Жизни -->
+    <TextView
+        android:id="@+id/tvRegionLives"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="❤️❤️❤️"
+        android:textSize="24sp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Карточка страны -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#FFFFFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvRegionFlag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏳️"
+                android:textSize="72sp"/>
+
+            <TextView
+                android:id="@+id/tvRegionCountryName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="Страна"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#2C3E50"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="На каком континенте?"
+                android:textSize="14sp"
+                android:textColor="#95A5A6"/>
+
+            <!-- Результат ответа -->
+            <TextView
+                android:id="@+id/tvRegionResult"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:visibility="invisible"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- 6 кнопок континентов — 2 колонки -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="80dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/btnRegion1"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="Европа 🇪🇺"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6366F1"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"/>
+
+            <Button
+                android:id="@+id/btnRegion2"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="Азия 🌏"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6366F1"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/btnRegion3"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="Африка 🌍"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6366F1"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"/>
+
+            <Button
+                android:id="@+id/btnRegion4"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="Сев. Америка 🇨🇦"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6366F1"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnRegion5"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="Юж. Америка 🇧🇷"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6366F1"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"/>
+
+            <Button
+                android:id="@+id/btnRegion6"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="Океания 🇦🇺"
+                android:textSize="13sp"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#6366F1"
+                android:textAllCaps="false"
+                app:cornerRadius="12dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

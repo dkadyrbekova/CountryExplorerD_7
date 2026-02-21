@@ -23,15 +23,19 @@ public class QuizMenuFragment extends Fragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
 
-        // Карточки режимов
         setupCard(view, R.id.cardQuizCapitals, "Capitals");
         setupCard(view, R.id.cardQuizFlags, "Flags");
         setupCard(view, R.id.cardQuizCurrency, "Currencies");
 
-        // Избранное
         CardView cardFavorites = view.findViewById(R.id.cardQuizFavorites);
         if (cardFavorites != null) {
             cardFavorites.setOnClickListener(v -> launchFavoriteQuiz());
+        }
+
+        // 5-й режим — Угадай регион
+        CardView cardRegion = view.findViewById(R.id.cardQuizRegion);
+        if (cardRegion != null) {
+            cardRegion.setOnClickListener(v -> launchRegionQuiz());
         }
 
         return view;
@@ -57,7 +61,6 @@ public class QuizMenuFragment extends Fragment {
     }
 
     private void launchFavoriteQuiz() {
-        // Проверяем есть ли избранные
         viewModel.loadFavorites();
         viewModel.getFavorites().observe(getViewLifecycleOwner(), favorites -> {
             if (favorites == null || favorites.isEmpty()) {
@@ -75,5 +78,13 @@ public class QuizMenuFragment extends Fragment {
                         .commit();
             }
         });
+    }
+
+    private void launchRegionQuiz() {
+        RegionQuizFragment fragment = new RegionQuizFragment();
+        getParentFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
