@@ -3,6 +3,7 @@ package com.example.countryexplorerd;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -10,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.countryexplorerd.models.Country;
@@ -23,23 +27,31 @@ import java.util.List;
 
 public class RegionQuizFragment extends Fragment {
 
-    // Все 6 континентов с эмодзи — показываются как варианты ответа
     private static final String[] REGIONS = {
             "Europe", "Asia", "Africa", "North America", "South America", "Oceania"
     };
     private static final String[] REGIONS_RU = {
-            "Европа 🇪🇺", "Азия 🌏", "Африка 🌍", "Северная Америка 🇨🇦", "Южная Америка 🇧🇷", "Океания 🇦🇺"
+            "Европа 🇪🇺", "Азия 🌏", "Африка 🌍", "Сев. Америка 🇨🇦", "Юж. Америка 🇧🇷", "Океания 🇦🇺"
     };
 
-    private TextView tvFlag, tvCountryName, tvScore, tvLives, tvCounter, tvResult;
+    private TextView tvFlag, tvCountryName, tvScore, tvLives, tvCounter, tvTimer;
     private Button[] btnRegions = new Button[6];
+    private ImageButton btnBack, btnPause;
+    private ProgressBar progressBar;
 
     private List<Country> countryList = new ArrayList<>();
     private Country currentCountry;
     private int score = 0;
     private int lives = 3;
     private int questionNumber = 0;
+    private int maxStreak = 0;
+    private int streak = 0;
     private static final int MAX_LIVES = 3;
+
+    private CountDownTimer timer;
+    private long timeLeftInMillis = 15000;
+    private boolean isPaused = false;
+    private String currentCorrectRegion = "";
 
     private CountryViewModel viewModel;
 
@@ -54,7 +66,10 @@ public class RegionQuizFragment extends Fragment {
         tvScore       = view.findViewById(R.id.tvRegionScore);
         tvLives       = view.findViewById(R.id.tvRegionLives);
         tvCounter     = view.findViewById(R.id.tvRegionCounter);
-        tvResult      = view.findViewById(R.id.tvRegionResult);
+        tvTimer       = view.findViewById(R.id.tvRegionTimer);
+        progressBar   = view.findViewById(R.id.progressBarRegion);
+        btnBack       = view.findViewById(R.id.btnRegionBack);
+        btnPause      = view.findViewById(R.id.btnRegionPause);
 
         btnRegions[0] = view.findViewById(R.id.btnRegion1);
         btnRegions[1] = view.findViewById(R.id.btnRegion2);
@@ -63,12 +78,14 @@ public class RegionQuizFragment extends Fragment {
         btnRegions[4] = view.findViewById(R.id.btnRegion5);
         btnRegions[5] = view.findViewById(R.id.btnRegion6);
 
-        view.findViewById(R.id.btnRegionBack).setOnClickListener(v ->
-                getParentFragmentManager().popBackStack());
+        btnBack.setOnClickListener(v -> {
+            if (timer != null) timer.cancel();
+            getParentFragmentManager().popBackStack();
+        });
 
-        // Назначаем текст кнопок — всегда одни и те же 6 континентов
+        btnPause.setOnClickListener(v -> togglePause());
+
         for (int i = 0; i < 6; i++) {
-            btnRegions[i].setText(REGIONS_RU[i]);
             final int idx = i;
             btnRegions[i].setOnClickListener(v -> onRegionSelected(idx));
         }
@@ -76,7 +93,6 @@ public class RegionQuizFragment extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
         viewModel.getCountries().observe(getViewLifecycleOwner(), countries -> {
             if (countries != null && countryList.isEmpty()) {
-                // Берём только страны у которых есть регион из нашего списка
                 for (Country c : countries) {
                     if (c.getRegion() != null && isKnownRegion(c.getRegion())) {
                         countryList.add(c);
@@ -105,67 +121,69 @@ public class RegionQuizFragment extends Fragment {
             return;
         }
 
+        isPaused = false;
         questionNumber++;
-        tvResult.setVisibility(View.INVISIBLE);
+        timeLeftInMillis = 15000;
 
         int index = (questionNumber - 1) % countryList.size();
         if (index == 0 && questionNumber > 1) Collections.shuffle(countryList);
 
         currentCountry = countryList.get(index);
+        currentCorrectRegion = currentCountry.getRegion();
 
         tvFlag.setText(currentCountry.getFlag());
         tvCountryName.setText(currentCountry.getName());
-        tvCounter.setText("Вопрос " + questionNumber);
+        tvCounter.setText(questionNumber + " / ∞");
+
+        progressBar.setMax(MAX_LIVES);
+        progressBar.setProgress(lives);
 
         updateLivesUI();
         updateScoreUI();
         resetButtons();
+        startTimer(timeLeftInMillis);
     }
 
-    private void onRegionSelected(int selectedIndex) {
-        String selected = REGIONS[selectedIndex];
-        String correct  = currentCountry.getRegion();
-        boolean isCorrect = selected.equalsIgnoreCase(correct);
+    // ─── ОТВЕТ ───────────────────────────────────────────────────────────────
 
-        // Блокируем все кнопки
+    private void onRegionSelected(int selectedIndex) {
+        if (isPaused) return;
+        if (timer != null) timer.cancel();
+
+        String selected = REGIONS[selectedIndex];
+        boolean isCorrect = selected.equalsIgnoreCase(currentCorrectRegion);
+
         for (Button b : btnRegions) b.setEnabled(false);
 
         if (isCorrect) {
-            // ✅ Правильно — зелёная
             btnRegions[selectedIndex].setBackgroundTintList(
                     ColorStateList.valueOf(Color.parseColor("#2ECC71")));
+            btnRegions[selectedIndex].setTextColor(Color.WHITE);
             score++;
-            tvResult.setText("✅ Правильно!");
-            tvResult.setTextColor(Color.parseColor("#2ECC71"));
-            tvResult.setVisibility(View.VISIBLE);
+            streak++;
+            if (streak > maxStreak) maxStreak = streak;
             updateScoreUI();
+            new Handler().postDelayed(this::nextQuestion, 800);
         } else {
-            // ❌ Неправильно — красная нажатая, зелёная правильная
             btnRegions[selectedIndex].setBackgroundTintList(
                     ColorStateList.valueOf(Color.parseColor("#E74C3C")));
-            highlightCorrect(correct);
+            btnRegions[selectedIndex].setTextColor(Color.WHITE);
+            highlightCorrect(currentCorrectRegion);
 
-            String correctRu = getRegionRu(correct);
-            tvResult.setText("❌ Правильный ответ: " + correctRu);
-            tvResult.setTextColor(Color.parseColor("#E74C3C"));
-            tvResult.setVisibility(View.VISIBLE);
+            streak = 0;
+            Vibrator vib = (Vibrator) requireContext().getSystemService(android.content.Context.VIBRATOR_SERVICE);
+            if (vib != null) vib.vibrate(VibrationEffect.createOneShot(200, 255));
 
             lives--;
             updateLivesUI();
+            progressBar.setProgress(lives);
 
-            Vibrator vib = (Vibrator) requireContext().getSystemService(android.content.Context.VIBRATOR_SERVICE);
-            if (vib != null) vib.vibrate(VibrationEffect.createOneShot(200, 255));
-        }
-
-        // Переходим к следующему вопросу через 1.2 сек
-        new Handler().postDelayed(() -> {
-            if (!isAdded()) return;
             if (lives <= 0) {
-                showResult();
+                new Handler().postDelayed(this::showResult, 1200);
             } else {
-                nextQuestion();
+                new Handler().postDelayed(this::nextQuestion, 1200);
             }
-        }, 1200);
+        }
     }
 
     private void highlightCorrect(String correctRegion) {
@@ -173,25 +191,68 @@ public class RegionQuizFragment extends Fragment {
             if (REGIONS[i].equalsIgnoreCase(correctRegion)) {
                 btnRegions[i].setBackgroundTintList(
                         ColorStateList.valueOf(Color.parseColor("#2ECC71")));
+                btnRegions[i].setTextColor(Color.WHITE);
                 break;
             }
         }
     }
 
-    private String getRegionRu(String region) {
-        for (int i = 0; i < REGIONS.length; i++) {
-            if (REGIONS[i].equalsIgnoreCase(region)) return REGIONS_RU[i];
+    // ─── ТАЙМЕР ──────────────────────────────────────────────────────────────
+
+    private void startTimer(long duration) {
+        if (timer != null) timer.cancel();
+        timer = new CountDownTimer(duration, 100) {
+            public void onTick(long m) {
+                timeLeftInMillis = m;
+                int seconds = (int) (m / 1000);
+                tvTimer.setText(seconds + "s");
+                tvTimer.setTextColor(seconds <= 5
+                        ? Color.parseColor("#E74C3C")
+                        : Color.parseColor("#2ECC71"));
+            }
+            public void onFinish() {
+                if (!isPaused) {
+                    streak = 0;
+                    lives--;
+                    updateLivesUI();
+                    progressBar.setProgress(lives);
+
+                    Vibrator vib = (Vibrator) requireContext().getSystemService(android.content.Context.VIBRATOR_SERVICE);
+                    if (vib != null) vib.vibrate(VibrationEffect.createOneShot(300, 255));
+
+                    highlightCorrect(currentCorrectRegion);
+                    for (Button b : btnRegions) b.setEnabled(false);
+
+                    if (lives <= 0) {
+                        new Handler().postDelayed(() -> showResult(), 1200);
+                    } else {
+                        new Handler().postDelayed(() -> nextQuestion(), 1200);
+                    }
+                }
+            }
+        }.start();
+    }
+
+    private void togglePause() {
+        if (!isPaused) {
+            isPaused = true;
+            if (timer != null) timer.cancel();
+            btnPause.setImageResource(android.R.drawable.ic_media_play);
+        } else {
+            isPaused = false;
+            startTimer(timeLeftInMillis);
+            btnPause.setImageResource(android.R.drawable.ic_media_pause);
         }
-        return region;
     }
 
     // ─── UI ──────────────────────────────────────────────────────────────────
 
     private void resetButtons() {
-        for (Button b : btnRegions) {
-            b.setEnabled(true);
-            b.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#6366F1")));
-            b.setTextColor(Color.WHITE);
+        for (int i = 0; i < 6; i++) {
+            btnRegions[i].setEnabled(true);
+            btnRegions[i].setBackgroundTintList(null);
+            btnRegions[i].setBackground(requireContext().getDrawable(R.drawable.quiz_button_answer));
+            btnRegions[i].setTextColor(Color.parseColor("#2C3E50"));
         }
     }
 
@@ -206,20 +267,48 @@ public class RegionQuizFragment extends Fragment {
         tvScore.setText("⭐ " + score);
     }
 
+    // ─── ДИАЛОГ РЕЗУЛЬТАТА (как в QuizGameFragment) ───────────────────────────
+
     private void showResult() {
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("🌍 Игра окончена!")
-                .setMessage("Правильных ответов: " + score + "\nВопросов сыграно: " + questionNumber)
-                .setCancelable(false)
-                .setPositiveButton("Играть снова", (d, w) -> {
-                    score = 0;
-                    lives = MAX_LIVES;
-                    questionNumber = 0;
-                    Collections.shuffle(countryList);
-                    nextQuestion();
-                })
-                .setNegativeButton("В меню", (d, w) ->
-                        getParentFragmentManager().popBackStack())
-                .show();
+        if (timer != null) timer.cancel();
+        if (!isAdded()) return;
+
+        // Используем тот же dialog_quiz_result что и QuizGameFragment
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        View v = getLayoutInflater().inflate(R.layout.dialog_quiz_result, null);
+        builder.setView(v);
+        builder.setCancelable(false);
+        AlertDialog d = builder.create();
+
+        int safe = questionNumber > 0 ? questionNumber : 1;
+        int percentage = (int) ((score * 100.0) / safe);
+
+        ((TextView) v.findViewById(R.id.tvResultCorrect)).setText("Правильно: " + score + "/" + questionNumber);
+        ((TextView) v.findViewById(R.id.tvResultPercentage)).setText(percentage + "%");
+        ((TextView) v.findViewById(R.id.tvResultStreak)).setText("Лучшая серия: " + maxStreak + " 🔥");
+
+        v.findViewById(R.id.btnRetry).setOnClickListener(view -> {
+            d.dismiss();
+            score = 0;
+            lives = MAX_LIVES;
+            questionNumber = 0;
+            streak = 0;
+            maxStreak = 0;
+            Collections.shuffle(countryList);
+            nextQuestion();
+        });
+
+        v.findViewById(R.id.btnToMenu).setOnClickListener(view -> {
+            d.dismiss();
+            getParentFragmentManager().popBackStack();
+        });
+
+        d.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (timer != null) timer.cancel();
     }
 }

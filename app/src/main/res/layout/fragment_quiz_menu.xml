@@ -120,21 +120,21 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Угадай регион — 5-й режим -->
+            <!-- Угадай регион — светлее тёмно-синий #2C3E6B -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardQuizRegion"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="4dp"
-                app:cardBackgroundColor="#1A1A2E">
+                app:cardBackgroundColor="#7B96D4">
                 <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:gravity="center_vertical" android:padding="20dp">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="🌍" android:textSize="48sp"/>
                     <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginStart="16dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Угадай регион" android:textSize="20sp" android:textStyle="bold" android:textColor="#FFFFFF"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="На каком континенте страна?" android:textSize="13sp" android:textColor="#AAAACC" android:layout_marginTop="2dp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="На каком континенте страна?" android:textSize="13sp" android:textColor="#C5CAE9" android:layout_marginTop="2dp"/>
                     </LinearLayout>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="32sp" android:textColor="#6366F1"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="32sp" android:textColor="#9FA8DA"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
