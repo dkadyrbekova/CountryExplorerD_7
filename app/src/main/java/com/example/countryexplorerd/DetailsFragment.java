@@ -1,10 +1,9 @@
 package com.example.countryexplorerd;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +25,9 @@ public class DetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Загружаем XML (уже без кнопки избранного)
         View view = inflater.inflate(R.layout.fragment_details, container, false);
 
-        // Привязка элементов интерфейса
         ImageButton btnBack = view.findViewById(R.id.btnBackDetails);
-
         TextView tvFlag = view.findViewById(R.id.details_flag);
         TextView tvName = view.findViewById(R.id.details_name);
         TextView tvCapital = view.findViewById(R.id.details_capital);
@@ -43,6 +39,11 @@ public class DetailsFragment extends Fragment {
         MaterialButton btnShare = view.findViewById(R.id.btnShare);
 
         etNote = view.findViewById(R.id.etCountryNote);
+
+        // Явно устанавливаем inputType программно — это решает проблему с русским
+        etNote.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        etNote.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+
         MaterialButton btnSaveNote = view.findViewById(R.id.btnSaveNote);
         MaterialButton btnDeleteNote = view.findViewById(R.id.btnDeleteNote);
 
@@ -57,7 +58,6 @@ public class DetailsFragment extends Fragment {
             tvLanguage.setText(getArguments().getString("country_language", "Не указан"));
             tvInfo.setText(getArguments().getString("country_info", "Описание скоро появится..."));
 
-            // Логика заметок
             loadNote();
 
             if (btnMap != null) {
@@ -98,8 +98,6 @@ public class DetailsFragment extends Fragment {
 
         return view;
     }
-
-    // --- ЛОГИКА ЗАМЕТОК ---
 
     private void loadNote() {
         new Thread(() -> {
