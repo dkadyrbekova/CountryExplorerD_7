@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ui.continents.countries.AllCountriesFragment;
+import ui.continents.quiz.QuizMenuFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     private List<Country> regionCountries = new ArrayList<>();

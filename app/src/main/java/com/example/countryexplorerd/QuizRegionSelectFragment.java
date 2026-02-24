@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import ui.continents.quiz.QuizGameFragment;
+
 public class QuizRegionSelectFragment extends Fragment {
 
     private String gameType;

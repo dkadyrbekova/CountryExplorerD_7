@@ -1,4 +1,4 @@
-package com.example.countryexplorerd.adapters;
+package ui.continents.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

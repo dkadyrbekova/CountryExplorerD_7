@@ -1,4 +1,4 @@
-package com.example.countryexplorerd; // Твой новый пакет
+package ui.continents; // Твой новый пакет
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider; // Для MVVM
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import ui.continents.adapters.CountryAdapter;
+import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import java.util.ArrayList;

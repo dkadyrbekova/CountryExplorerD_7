@@ -2,7 +2,6 @@ package com.example.countryexplorerd;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -26,7 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.countryexplorerd.adapters.SightseeingAdapter;
+import ui.continents.adapters.SightseeingAdapter;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
 import com.example.countryexplorerd.models.Sightseeing;
@@ -34,7 +33,6 @@ import com.example.countryexplorerd.network.RetrofitClient;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import com.example.countryexplorerd.viewmodel.MainViewModel;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.chip.Chip;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -46,6 +44,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import ui.continents.AfricaFragment;
+import ui.continents.AsiaFragment;
+import ui.continents.AustraliaFragment;
+import ui.continents.EuropeFragment;
+import ui.continents.NAmericaFragment;
+import ui.continents.SAmericaFragment;
 
 public class ContinentsFragment extends Fragment {
 

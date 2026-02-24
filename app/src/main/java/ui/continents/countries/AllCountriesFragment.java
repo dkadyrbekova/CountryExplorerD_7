@@ -1,4 +1,4 @@
-package com.example.countryexplorerd; // Твой новый пакет
+package ui.continents.countries; // Твой новый пакет
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider; // Для MVVM
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.countryexplorerd.MainActivity;
+import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country; // Новая модель
 import com.example.countryexplorerd.viewmodel.CountryViewModel; // Наша ViewModel
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.countryexplorerd;
+package ui.continents.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.countryexplorerd.FavoriteCountry;
+import com.example.countryexplorerd.MainActivity;
+import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;
 import java.util.List;
 

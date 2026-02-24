@@ -1,4 +1,4 @@
-package com.example.countryexplorerd;
+package ui.continents; // Твой новый пакет
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,12 +10,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import ui.continents.adapters.CountryAdapter;
+import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SAmericaFragment extends Fragment {
+public class NAmericaFragment extends Fragment {
 
     private final List<Country> countries = new ArrayList<>();
     private CountryAdapter adapter;
@@ -23,26 +26,30 @@ public class SAmericaFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_south_america, container, false);
+        // Убедись, что файл fragment_north_america.xml перенесен в res/layout
+        View view = inflater.inflate(R.layout.fragment_north_america, container, false);
 
-        ImageButton btnBack = view.findViewById(R.id.btnBackSA);
+        ImageButton btnBack = view.findViewById(R.id.btnBackNA);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
         }
 
-        RecyclerView recyclerView = view.findViewById(R.id.rvSAmerica);
+        RecyclerView recyclerView = view.findViewById(R.id.rvNAmerica);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         adapter = new CountryAdapter(countries);
         recyclerView.setAdapter(adapter);
 
+        // MVVM: Подключаемся к ViewModel
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
 
+        // Слушаем данные из Postman
         viewModel.getCountries().observe(getViewLifecycleOwner(), allCountries -> {
             if (allCountries != null) {
                 countries.clear();
+                // Фильтруем страны Северной Америки
                 for (Country c : allCountries) {
-                    if ("South America".equalsIgnoreCase(c.getRegion())) {
+                    if ("North America".equalsIgnoreCase(c.getRegion())) {
                         countries.add(c);
                     }
                 }

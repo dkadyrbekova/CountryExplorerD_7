@@ -1,4 +1,4 @@
-package com.example.countryexplorerd; // Твой новый пакет
+package ui.continents;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,15 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider; // Для MVVM
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import ui.continents.adapters.CountryAdapter;
+import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EuropeFragment extends Fragment {
+public class SAmericaFragment extends Fragment {
 
     private final List<Country> countries = new ArrayList<>();
     private CountryAdapter adapter;
@@ -23,32 +26,26 @@ public class EuropeFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Убедись, что файл fragment_europe.xml скопирован в res/layout
-        View view = inflater.inflate(R.layout.fragment_europe, container, false);
+        View view = inflater.inflate(R.layout.fragment_south_america, container, false);
 
-        // Кнопка "Назад"
-        ImageButton btnBack = view.findViewById(R.id.btnBack);
+        ImageButton btnBack = view.findViewById(R.id.btnBackSA);
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
         }
 
-        // Настройка списка (сетка в 2 колонки)
-        RecyclerView recyclerView = view.findViewById(R.id.rvEurope);
+        RecyclerView recyclerView = view.findViewById(R.id.rvSAmerica);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         adapter = new CountryAdapter(countries);
         recyclerView.setAdapter(adapter);
 
-        // MVVM: Подключаемся к ViewModel
         viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
 
-        // Слушаем данные из Postman
         viewModel.getCountries().observe(getViewLifecycleOwner(), allCountries -> {
             if (allCountries != null) {
                 countries.clear();
-                // Фильтруем страны, где регион - Европа
                 for (Country c : allCountries) {
-                    if ("Europe".equalsIgnoreCase(c.getRegion())) {
+                    if ("South America".equalsIgnoreCase(c.getRegion())) {
                         countries.add(c);
                     }
                 }
