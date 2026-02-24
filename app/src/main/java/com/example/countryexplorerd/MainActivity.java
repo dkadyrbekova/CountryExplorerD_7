@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        // ✅ Загружаем тему перед super.onCreate
         SharedPreferences prefs = getSharedPreferences("AppSettings", MODE_PRIVATE);
         boolean isDarkTheme = prefs.getBoolean("dark_theme", false);
 
@@ -89,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDataFromPostman() {
-
         viewModel.getCountries().observe(this, countries -> {
             if (countries != null) {
                 regionCountries.clear();
@@ -115,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         b.putString("country_name", countryFromList.getName());
         b.putString("country_capital", countryFromList.getCapital());
         b.putString("country_flag", countryFromList.getFlag());
+        b.putString("country_region", countryFromList.getRegion()); // ← ДОБАВЛЕНО
 
         CountryDetail details = detailedMap.get(countryFromList.getName());
         if (details != null) {

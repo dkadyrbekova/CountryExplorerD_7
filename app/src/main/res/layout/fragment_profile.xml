@@ -84,7 +84,6 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Общий прогресс -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -115,7 +114,6 @@
                         android:layout_height="1dp"
                         android:background="@color/colorDivider"/>
 
-                    <!-- Столицы -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -146,7 +144,6 @@
                         android:layout_height="1dp"
                         android:background="@color/colorDivider"/>
 
-                    <!-- Флаги -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -177,7 +174,6 @@
                         android:layout_height="1dp"
                         android:background="@color/colorDivider"/>
 
-                    <!-- Валюты -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -204,6 +200,166 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- ===== МОИ ПУТЕШЕСТВИЯ ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="✈️ Мои путешествия"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorTextPrimary"/>
+
+                <TextView
+                    android:id="@+id/tvVisitedCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(0)"
+                    android:textSize="14sp"
+                    android:textColor="@color/colorTextSecondary"/>
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/colorCardBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <!-- Три цифры: страны, континенты, % мира -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="16dp">
+
+                        <!-- Страны -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="#1A6366F1"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tvVisitedCountries"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="#6366F1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="стран"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorTextSecondary"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"/>
+
+                        <!-- Континенты -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="#1A10B981"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tvVisitedContinents"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="#10B981"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="континентов"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorTextSecondary"/>
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="8dp"
+                            android:layout_height="match_parent"/>
+
+                        <!-- % мира -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:background="#1AF59E0B"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/tvVisitedPercent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0%"
+                                android:textSize="28sp"
+                                android:textStyle="bold"
+                                android:textColor="#F59E0B"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="мира"
+                                android:textSize="12sp"
+                                android:textColor="@color/colorTextSecondary"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Список посещённых стран -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvVisited"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"/>
+
+                    <TextView
+                        android:id="@+id/tvEmptyVisited"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Вы ещё не отметили ни одной страны\nОткройте страну и нажмите ✈️"
+                        android:textSize="14sp"
+                        android:textColor="@color/colorTextSecondary"
+                        android:gravity="center"
+                        android:padding="24dp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!-- ===== КОНЕЦ МОИ ПУТЕШЕСТВИЯ ===== -->
 
             <!-- Избранные страны -->
             <LinearLayout

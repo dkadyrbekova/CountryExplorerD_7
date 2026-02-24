@@ -116,6 +116,7 @@
                     android:orientation="vertical"
                     android:padding="4dp">
 
+                    <!-- Сбросить прогресс -->
                     <LinearLayout
                         android:id="@+id/btnResetProgress"
                         android:layout_width="match_parent"
@@ -145,6 +146,7 @@
                         android:background="@color/colorDivider"
                         android:layout_marginHorizontal="16dp"/>
 
+                    <!-- Удалить заметки -->
                     <LinearLayout
                         android:id="@+id/btnDeleteNotes"
                         android:layout_width="match_parent"
@@ -174,6 +176,7 @@
                         android:background="@color/colorDivider"
                         android:layout_marginHorizontal="16dp"/>
 
+                    <!-- Удалить избранное -->
                     <LinearLayout
                         android:id="@+id/btnDeleteFavorites"
                         android:layout_width="match_parent"
@@ -196,6 +199,37 @@
                             android:textSize="24sp"
                             android:textColor="@color/colorTextSecondary"/>
                     </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/colorDivider"
+                        android:layout_marginHorizontal="16dp"/>
+
+                    <!-- НОВОЕ: Очистить путешествия -->
+                    <LinearLayout
+                        android:id="@+id/btnDeleteVisited"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="16dp"
+                        android:background="?attr/selectableItemBackground">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="✈️ Очистить путешествия"
+                            android:textSize="15sp"
+                            android:textColor="@color/colorTextPrimary"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textSize="24sp"
+                            android:textColor="@color/colorTextSecondary"/>
+                    </LinearLayout>
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 

@@ -14,22 +14,30 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import database.CountryNote;
 
 import com.example.countryexplorerd.MainActivity;
 import com.example.countryexplorerd.R;
+import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import com.google.android.material.button.MaterialButton;
 
 public class DetailsFragment extends Fragment {
 
     private String countryName;
+    private String countryRegion;
     private EditText etNote;
+    private MaterialButton btnVisited;
+    private CountryViewModel viewModel;
+    private boolean isVisited = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(CountryViewModel.class);
 
         ImageButton btnBack = view.findViewById(R.id.btnBackDetails);
         TextView tvFlag = view.findViewById(R.id.details_flag);
@@ -41,10 +49,9 @@ public class DetailsFragment extends Fragment {
 
         MaterialButton btnMap = view.findViewById(R.id.btnOpenMap);
         MaterialButton btnShare = view.findViewById(R.id.btnShare);
+        btnVisited = view.findViewById(R.id.btnVisited);
 
         etNote = view.findViewById(R.id.etCountryNote);
-
-        // Явно устанавливаем inputType программно — это решает проблему с русским
         etNote.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
         etNote.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
 
@@ -53,6 +60,7 @@ public class DetailsFragment extends Fragment {
 
         if (getArguments() != null) {
             countryName = getArguments().getString("country_name", "");
+            countryRegion = getArguments().getString("country_region", "");
             String capital = getArguments().getString("country_capital", "");
 
             tvName.setText(countryName);
@@ -63,6 +71,7 @@ public class DetailsFragment extends Fragment {
             tvInfo.setText(getArguments().getString("country_info", "Описание скоро появится..."));
 
             loadNote();
+            checkVisited(); // Проверяем — посещена ли уже
 
             if (btnMap != null) {
                 btnMap.setOnClickListener(v -> {
@@ -87,6 +96,11 @@ public class DetailsFragment extends Fragment {
                 });
             }
 
+            // НОВОЕ: кнопка "Я был здесь"
+            if (btnVisited != null) {
+                btnVisited.setOnClickListener(v -> toggleVisited());
+            }
+
             if (btnSaveNote != null) {
                 btnSaveNote.setOnClickListener(v -> saveNote());
             }
@@ -101,6 +115,42 @@ public class DetailsFragment extends Fragment {
         }
 
         return view;
+    }
+
+    // Проверяем посещена ли страна и обновляем кнопку
+    private void checkVisited() {
+        new Thread(() -> {
+            isVisited = viewModel.isVisited(countryName);
+            if (getActivity() != null) {
+                getActivity().runOnUiThread(this::updateVisitedButton);
+            }
+        }).start();
+    }
+
+    private void updateVisitedButton() {
+        if (btnVisited == null) return;
+        if (isVisited) {
+            btnVisited.setText("✅ Посещено!");
+            btnVisited.setBackgroundColor(0xFF10B981); // зелёный
+        } else {
+            btnVisited.setText("✈️ Отметить как посещённую");
+            btnVisited.setBackgroundColor(0xFF6366F1); // фиолетовый
+        }
+    }
+
+    private void toggleVisited() {
+        if (isVisited) {
+            // Убираем отметку
+            viewModel.removeVisited(countryName);
+            isVisited = false;
+            Toast.makeText(getContext(), "Убрано из посещённых", Toast.LENGTH_SHORT).show();
+        } else {
+            // Добавляем отметку
+            viewModel.addVisited(countryName, countryRegion);
+            isVisited = true;
+            Toast.makeText(getContext(), "✈️ Добавлено в путешествия!", Toast.LENGTH_SHORT).show();
+        }
+        updateVisitedButton();
     }
 
     private void loadNote() {

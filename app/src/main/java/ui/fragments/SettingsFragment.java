@@ -25,7 +25,6 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        // Кнопка назад
         view.findViewById(R.id.btnBackSettings).setOnClickListener(v ->
                 getParentFragmentManager().popBackStack()
         );
@@ -43,7 +42,6 @@ public class SettingsFragment extends Fragment {
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
-            // ✅ ПЕРЕЗАПУСКАЕМ АКТИВИТИ ДЛЯ ПРИМЕНЕНИЯ ТЕМЫ
             requireActivity().recreate();
         });
 
@@ -75,9 +73,7 @@ public class SettingsFragment extends Fragment {
                                 requireActivity().runOnUiThread(() ->
                                         Toast.makeText(getContext(), "Заметки удалены", Toast.LENGTH_SHORT).show()
                                 );
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            } catch (Exception e) { e.printStackTrace(); }
                         }).start();
                     })
                     .setNegativeButton("Отмена", null)
@@ -97,9 +93,27 @@ public class SettingsFragment extends Fragment {
                                 requireActivity().runOnUiThread(() ->
                                         Toast.makeText(getContext(), "Избранное удалено", Toast.LENGTH_SHORT).show()
                                 );
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                            } catch (Exception e) { e.printStackTrace(); }
+                        }).start();
+                    })
+                    .setNegativeButton("Отмена", null)
+                    .show();
+        });
+
+        // НОВОЕ: Очистить путешествия
+        LinearLayout btnDeleteVisited = view.findViewById(R.id.btnDeleteVisited);
+        btnDeleteVisited.setOnClickListener(v -> {
+            new AlertDialog.Builder(requireContext())
+                    .setTitle("Очистить путешествия?")
+                    .setMessage("Все посещённые страны будут удалены из архива.")
+                    .setPositiveButton("Очистить", (dialog, which) -> {
+                        new Thread(() -> {
+                            try {
+                                MainActivity.db.visitedDao().deleteAll();
+                                requireActivity().runOnUiThread(() ->
+                                        Toast.makeText(getContext(), "✈️ Архив путешествий очищен", Toast.LENGTH_SHORT).show()
+                                );
+                            } catch (Exception e) { e.printStackTrace(); }
                         }).start();
                     })
                     .setNegativeButton("Отмена", null)

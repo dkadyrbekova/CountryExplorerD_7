@@ -1,12 +1,14 @@
 package com.example.countryexplorerd.repository;
 
 import android.util.Log;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import database.FavoriteCountry;
 import com.example.countryexplorerd.MainActivity;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
 import database.CountryNote;
+import database.VisitedCountry;
 import com.example.countryexplorerd.network.ApiService;
 import com.example.countryexplorerd.network.RetrofitClient;
 import java.util.List;
@@ -19,8 +21,6 @@ public class CountryRepository {
     private ApiService apiService;
     private MutableLiveData<List<Country>> countriesLiveData;
     private MutableLiveData<Map<String, CountryDetail>> detailsLiveData;
-
-    // НОВОЕ: LiveData для избранного и заметок
     private MutableLiveData<List<FavoriteCountry>> favoritesLiveData;
     private MutableLiveData<List<CountryNote>> notesLiveData;
 
@@ -32,7 +32,7 @@ public class CountryRepository {
         notesLiveData = new MutableLiveData<>();
     }
 
-    // Метод для загрузки списка всех стран
+    // Методы для стран
     public MutableLiveData<List<Country>> getCountries() {
         if (countriesLiveData.getValue() == null) {
             loadCountries();
@@ -61,7 +61,7 @@ public class CountryRepository {
         });
     }
 
-    // Метод для загрузки деталей (фактов)
+    // Методы для деталей
     public MutableLiveData<Map<String, CountryDetail>> getDetails() {
         if (detailsLiveData.getValue() == null) {
             loadDetails();
@@ -74,23 +74,20 @@ public class CountryRepository {
             @Override
             public void onResponse(Call<Map<String, CountryDetail>> call, Response<Map<String, CountryDetail>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("CountryRepository", "Loaded details for " + response.body().size() + " countries");
                     detailsLiveData.postValue(response.body());
                 } else {
-                    Log.e("CountryRepository", "Details response not successful: " + response.code());
                     detailsLiveData.postValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<Map<String, CountryDetail>> call, Throwable t) {
-                Log.e("CountryRepository", "Failed to load details: " + t.getMessage());
                 detailsLiveData.postValue(null);
             }
         });
     }
 
-    // НОВОЕ: Методы для избранного
+    // Методы для избранного
     public MutableLiveData<List<FavoriteCountry>> getFavorites() {
         return favoritesLiveData;
     }
@@ -99,7 +96,6 @@ public class CountryRepository {
         new Thread(() -> {
             try {
                 List<FavoriteCountry> favorites = MainActivity.db.favoriteDao().getAllFavorites();
-                Log.d("CountryRepository", "Loaded " + favorites.size() + " favorites");
                 favoritesLiveData.postValue(favorites);
             } catch (Exception e) {
                 Log.e("CountryRepository", "Failed to load favorites: " + e.getMessage());
@@ -111,10 +107,8 @@ public class CountryRepository {
     public void addFavorite(String countryName) {
         new Thread(() -> {
             try {
-                FavoriteCountry fav = new FavoriteCountry(countryName);
-                MainActivity.db.favoriteDao().insert(fav);
-                Log.d("CountryRepository", "Added favorite: " + countryName);
-                loadFavorites(); // Обновляем список
+                MainActivity.db.favoriteDao().insert(new FavoriteCountry(countryName));
+                loadFavorites();
             } catch (Exception e) {
                 Log.e("CountryRepository", "Failed to add favorite: " + e.getMessage());
             }
@@ -124,17 +118,15 @@ public class CountryRepository {
     public void removeFavorite(String countryName) {
         new Thread(() -> {
             try {
-                FavoriteCountry fav = new FavoriteCountry(countryName);
-                MainActivity.db.favoriteDao().delete(fav);
-                Log.d("CountryRepository", "Removed favorite: " + countryName);
-                loadFavorites(); // Обновляем список
+                MainActivity.db.favoriteDao().delete(new FavoriteCountry(countryName));
+                loadFavorites();
             } catch (Exception e) {
                 Log.e("CountryRepository", "Failed to remove favorite: " + e.getMessage());
             }
         }).start();
     }
 
-    // НОВОЕ: Методы для заметок
+    // Методы для заметок
     public MutableLiveData<List<CountryNote>> getNotes() {
         return notesLiveData;
     }
@@ -143,7 +135,6 @@ public class CountryRepository {
         new Thread(() -> {
             try {
                 List<CountryNote> notes = MainActivity.db.noteDao().getAllNotes();
-                Log.d("CountryRepository", "Loaded " + notes.size() + " notes");
                 notesLiveData.postValue(notes);
             } catch (Exception e) {
                 Log.e("CountryRepository", "Failed to load notes: " + e.getMessage());
@@ -155,10 +146,8 @@ public class CountryRepository {
     public void saveNote(String countryName, String noteText) {
         new Thread(() -> {
             try {
-                CountryNote note = new CountryNote(countryName, noteText);
-                MainActivity.db.noteDao().insert(note);
-                Log.d("CountryRepository", "Saved note for: " + countryName);
-                loadNotes(); // Обновляем список
+                MainActivity.db.noteDao().insert(new CountryNote(countryName, noteText));
+                loadNotes();
             } catch (Exception e) {
                 Log.e("CountryRepository", "Failed to save note: " + e.getMessage());
             }
@@ -169,11 +158,56 @@ public class CountryRepository {
         new Thread(() -> {
             try {
                 MainActivity.db.noteDao().deleteByCountry(countryName);
-                Log.d("CountryRepository", "Deleted note for: " + countryName);
-                loadNotes(); // Обновляем список
+                loadNotes();
             } catch (Exception e) {
                 Log.e("CountryRepository", "Failed to delete note: " + e.getMessage());
             }
         }).start();
+    }
+
+    // НОВОЕ: Методы для посещённых стран
+    public LiveData<List<VisitedCountry>> getVisited() {
+        return MainActivity.db.visitedDao().getAll();
+    }
+
+    public LiveData<Integer> getVisitedCount() {
+        return MainActivity.db.visitedDao().getCount();
+    }
+
+    public LiveData<Integer> getVisitedContinentsCount() {
+        return MainActivity.db.visitedDao().getContinentsCount();
+    }
+
+    public void addVisited(String countryName, String region) {
+        new Thread(() -> {
+            try {
+                VisitedCountry visited = new VisitedCountry(countryName, region, System.currentTimeMillis());
+                MainActivity.db.visitedDao().insert(visited);
+                Log.d("CountryRepository", "Added visited: " + countryName);
+            } catch (Exception e) {
+                Log.e("CountryRepository", "Failed to add visited: " + e.getMessage());
+            }
+        }).start();
+    }
+
+    public void removeVisited(String countryName) {
+        new Thread(() -> {
+            try {
+                VisitedCountry visited = new VisitedCountry(countryName, "", 0);
+                MainActivity.db.visitedDao().delete(visited);
+                Log.d("CountryRepository", "Removed visited: " + countryName);
+            } catch (Exception e) {
+                Log.e("CountryRepository", "Failed to remove visited: " + e.getMessage());
+            }
+        }).start();
+    }
+
+    public boolean isVisited(String countryName) {
+        try {
+            return MainActivity.db.visitedDao().isVisited(countryName) > 0;
+        } catch (Exception e) {
+            Log.e("CountryRepository", "Failed to check visited: " + e.getMessage());
+            return false;
+        }
     }
 }

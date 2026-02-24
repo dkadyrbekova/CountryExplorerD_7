@@ -73,6 +73,7 @@
             android:orientation="vertical"
             android:padding="20dp">
 
+            <!-- Валюта и язык -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,6 +143,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- О стране -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -175,11 +177,12 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Кнопки Карта + Поделиться -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="12dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnOpenMap"
@@ -206,6 +209,21 @@
                     app:cornerRadius="12dp"/>
             </LinearLayout>
 
+            <!-- ===== КНОПКА "Я БЫЛ ЗДЕСЬ" ===== -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVisited"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="16dp"
+                android:text="✈️ Отметить как посещённую"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#6366F1"
+                app:cornerRadius="12dp"/>
+            <!-- ============================= -->
+
+            <!-- Заметки -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -273,6 +291,7 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

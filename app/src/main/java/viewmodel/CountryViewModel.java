@@ -6,6 +6,7 @@ import database.FavoriteCountry;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
 import database.CountryNote;
+import database.VisitedCountry;
 import com.example.countryexplorerd.repository.CountryRepository;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,9 @@ public class CountryViewModel extends ViewModel {
     private LiveData<Map<String, CountryDetail>> detailsLiveData;
     private LiveData<List<FavoriteCountry>> favoritesLiveData;
     private LiveData<List<CountryNote>> notesLiveData;
+    private LiveData<List<VisitedCountry>> visitedLiveData;
+    private LiveData<Integer> visitedCountLiveData;
+    private LiveData<Integer> visitedContinentsLiveData;
 
     public CountryViewModel() {
         repository = new CountryRepository();
@@ -37,7 +41,7 @@ public class CountryViewModel extends ViewModel {
         return detailsLiveData;
     }
 
-    // НОВОЕ: Методы для избранного
+    // Методы для избранного
     public LiveData<List<FavoriteCountry>> getFavorites() {
         if (favoritesLiveData == null) {
             favoritesLiveData = repository.getFavorites();
@@ -57,7 +61,7 @@ public class CountryViewModel extends ViewModel {
         repository.removeFavorite(countryName);
     }
 
-    // НОВОЕ: Методы для заметок
+    // Методы для заметок
     public LiveData<List<CountryNote>> getNotes() {
         if (notesLiveData == null) {
             notesLiveData = repository.getNotes();
@@ -75,5 +79,39 @@ public class CountryViewModel extends ViewModel {
 
     public void deleteNote(String countryName) {
         repository.deleteNote(countryName);
+    }
+
+    // НОВОЕ: Методы для посещённых стран
+    public LiveData<List<VisitedCountry>> getVisited() {
+        if (visitedLiveData == null) {
+            visitedLiveData = repository.getVisited();
+        }
+        return visitedLiveData;
+    }
+
+    public LiveData<Integer> getVisitedCount() {
+        if (visitedCountLiveData == null) {
+            visitedCountLiveData = repository.getVisitedCount();
+        }
+        return visitedCountLiveData;
+    }
+
+    public LiveData<Integer> getVisitedContinentsCount() {
+        if (visitedContinentsLiveData == null) {
+            visitedContinentsLiveData = repository.getVisitedContinentsCount();
+        }
+        return visitedContinentsLiveData;
+    }
+
+    public void addVisited(String countryName, String region) {
+        repository.addVisited(countryName, region);
+    }
+
+    public void removeVisited(String countryName) {
+        repository.removeVisited(countryName);
+    }
+
+    public boolean isVisited(String countryName) {
+        return repository.isVisited(countryName);
     }
 }
