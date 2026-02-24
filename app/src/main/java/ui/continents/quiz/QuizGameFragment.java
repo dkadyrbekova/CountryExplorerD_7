@@ -25,7 +25,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.countryexplorerd.FavoriteCountry;
+import database.FavoriteCountry;
 import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;

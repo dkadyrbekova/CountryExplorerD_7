@@ -1,4 +1,4 @@
-package com.example.countryexplorerd;
+package ui.continents.quiz;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import java.util.ArrayList;

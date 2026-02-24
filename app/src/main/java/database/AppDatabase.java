@@ -1,8 +1,7 @@
-package com.example.countryexplorerd;
+package database;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
-import com.example.countryexplorerd.models.CountryNote;
 
 // ВАЖНО: Добавили CountryNote.class и увеличили версию до 2
 @Database(entities = {FavoriteCountry.class, CountryNote.class}, version = 2, exportSchema = false)

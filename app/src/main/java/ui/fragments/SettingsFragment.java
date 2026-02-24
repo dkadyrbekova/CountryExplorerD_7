@@ -1,4 +1,4 @@
-package com.example.countryexplorerd;
+package ui.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+
+import com.example.countryexplorerd.MainActivity;
+import com.example.countryexplorerd.R;
 
 public class SettingsFragment extends Fragment {
 

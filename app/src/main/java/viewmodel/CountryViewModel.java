@@ -2,10 +2,10 @@ package com.example.countryexplorerd.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.countryexplorerd.FavoriteCountry;
+import database.FavoriteCountry;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
-import com.example.countryexplorerd.models.CountryNote;
+import database.CountryNote;
 import com.example.countryexplorerd.repository.CountryRepository;
 import java.util.List;
 import java.util.Map;

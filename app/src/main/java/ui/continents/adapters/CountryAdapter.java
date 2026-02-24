@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.countryexplorerd.FavoriteCountry;
+import database.FavoriteCountry;
 import com.example.countryexplorerd.MainActivity;
 import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;

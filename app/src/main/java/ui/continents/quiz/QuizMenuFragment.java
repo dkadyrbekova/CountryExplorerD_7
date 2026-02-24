@@ -11,9 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.countryexplorerd.QuizRegionSelectFragment;
 import com.example.countryexplorerd.R;
-import com.example.countryexplorerd.RegionQuizFragment;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 
 public class QuizMenuFragment extends Fragment {

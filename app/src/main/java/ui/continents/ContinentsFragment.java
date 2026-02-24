@@ -1,4 +1,4 @@
-package com.example.countryexplorerd;
+package ui.continents;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -26,6 +26,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ui.continents.adapters.SightseeingAdapter;
+
+import ui.continents.quiz.CategorySelectFragment;
+import com.example.countryexplorerd.MainActivity;
+import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
 import com.example.countryexplorerd.models.Sightseeing;
@@ -44,13 +48,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import ui.continents.AfricaFragment;
-import ui.continents.AsiaFragment;
-import ui.continents.AustraliaFragment;
-import ui.continents.EuropeFragment;
-import ui.continents.NAmericaFragment;
-import ui.continents.SAmericaFragment;
 
 public class ContinentsFragment extends Fragment {
 

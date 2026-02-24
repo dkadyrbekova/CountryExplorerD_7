@@ -1,4 +1,4 @@
-package com.example.countryexplorerd;
+package ui.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,11 +17,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.countryexplorerd.MainActivity;
+import com.example.countryexplorerd.R;
 import com.example.countryexplorerd.models.Country;
-import com.example.countryexplorerd.models.CountryNote;
+import database.CountryNote;
 import com.example.countryexplorerd.viewmodel.CountryViewModel;
 import java.util.ArrayList;
 import java.util.List;
+
+import database.FavoriteCountry;
 
 public class ProfileFragment extends Fragment {
 

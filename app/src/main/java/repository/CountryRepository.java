@@ -2,11 +2,11 @@ package com.example.countryexplorerd.repository;
 
 import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
-import com.example.countryexplorerd.FavoriteCountry;
+import database.FavoriteCountry;
 import com.example.countryexplorerd.MainActivity;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
-import com.example.countryexplorerd.models.CountryNote;
+import database.CountryNote;
 import com.example.countryexplorerd.network.ApiService;
 import com.example.countryexplorerd.network.RetrofitClient;
 import java.util.List;

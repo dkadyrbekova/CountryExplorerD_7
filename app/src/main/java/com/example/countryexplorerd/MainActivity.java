@@ -19,8 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import database.AppDatabase;
+import ui.continents.ContinentsFragment;
 import ui.continents.countries.AllCountriesFragment;
 import ui.continents.quiz.QuizMenuFragment;
+import ui.details.DetailsFragment;
+import ui.fragments.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity {
 

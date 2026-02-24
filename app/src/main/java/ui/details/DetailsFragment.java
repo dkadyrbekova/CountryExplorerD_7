@@ -1,4 +1,4 @@
-package com.example.countryexplorerd;
+package ui.details;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.countryexplorerd.models.CountryNote;
+import database.CountryNote;
+
+import com.example.countryexplorerd.MainActivity;
+import com.example.countryexplorerd.R;
 import com.google.android.material.button.MaterialButton;
 
 public class DetailsFragment extends Fragment {

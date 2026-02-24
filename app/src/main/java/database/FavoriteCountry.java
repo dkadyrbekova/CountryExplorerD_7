@@ -1,4 +1,4 @@
-package com.example.countryexplorerd; // Твой новый пакет
+package database; // Твой новый пакет
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

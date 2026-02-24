@@ -1,4 +1,4 @@
-package com.example.countryexplorerd;
+package ui.continents.quiz;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import ui.fragments.FlashcardFragment;
+import com.example.countryexplorerd.R;
 
 public class CategorySelectFragment extends Fragment {
 
