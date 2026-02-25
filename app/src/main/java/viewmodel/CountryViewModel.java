@@ -2,6 +2,7 @@ package com.example.countryexplorerd.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
+import database.DailyChallenge;
 import database.FavoriteCountry;
 import com.example.countryexplorerd.models.Country;
 import com.example.countryexplorerd.models.CountryDetail;
@@ -20,12 +21,16 @@ public class CountryViewModel extends ViewModel {
     private LiveData<List<VisitedCountry>> visitedLiveData;
     private LiveData<Integer> visitedCountLiveData;
     private LiveData<Integer> visitedContinentsLiveData;
+    private LiveData<DailyChallenge> todayChallengeLiveData; // <- новое
 
     public CountryViewModel() {
         repository = new CountryRepository();
     }
 
-    // Методы для стран
+    // ════════════════════════════════════════════════════════
+    // СТРАНЫ
+    // ════════════════════════════════════════════════════════
+
     public LiveData<List<Country>> getCountries() {
         if (countriesLiveData == null) {
             countriesLiveData = repository.getCountries();
@@ -33,7 +38,10 @@ public class CountryViewModel extends ViewModel {
         return countriesLiveData;
     }
 
-    // Методы для деталей (фактов)
+    // ════════════════════════════════════════════════════════
+    // ДЕТАЛИ / ФАКТЫ
+    // ════════════════════════════════════════════════════════
+
     public LiveData<Map<String, CountryDetail>> getDetails() {
         if (detailsLiveData == null) {
             detailsLiveData = repository.getDetails();
@@ -41,7 +49,10 @@ public class CountryViewModel extends ViewModel {
         return detailsLiveData;
     }
 
-    // Методы для избранного
+    // ════════════════════════════════════════════════════════
+    // ИЗБРАННОЕ
+    // ════════════════════════════════════════════════════════
+
     public LiveData<List<FavoriteCountry>> getFavorites() {
         if (favoritesLiveData == null) {
             favoritesLiveData = repository.getFavorites();
@@ -61,7 +72,10 @@ public class CountryViewModel extends ViewModel {
         repository.removeFavorite(countryName);
     }
 
-    // Методы для заметок
+    // ════════════════════════════════════════════════════════
+    // ЗАМЕТКИ
+    // ════════════════════════════════════════════════════════
+
     public LiveData<List<CountryNote>> getNotes() {
         if (notesLiveData == null) {
             notesLiveData = repository.getNotes();
@@ -81,7 +95,10 @@ public class CountryViewModel extends ViewModel {
         repository.deleteNote(countryName);
     }
 
-    // НОВОЕ: Методы для посещённых стран
+    // ════════════════════════════════════════════════════════
+    // ПОСЕЩЁННЫЕ СТРАНЫ
+    // ════════════════════════════════════════════════════════
+
     public LiveData<List<VisitedCountry>> getVisited() {
         if (visitedLiveData == null) {
             visitedLiveData = repository.getVisited();
@@ -113,5 +130,20 @@ public class CountryViewModel extends ViewModel {
 
     public boolean isVisited(String countryName) {
         return repository.isVisited(countryName);
+    }
+
+    // ════════════════════════════════════════════════════════
+    // ЧЕЛЛЕНДЖ ДНЯ
+    // ════════════════════════════════════════════════════════
+
+    public LiveData<DailyChallenge> getTodayChallenge() {
+        if (todayChallengeLiveData == null) {
+            todayChallengeLiveData = repository.getTodayChallenge();
+        }
+        return todayChallengeLiveData;
+    }
+
+    public void updateChallengeProgress(DailyChallenge challenge) {
+        repository.updateChallengeProgress(challenge);
     }
 }

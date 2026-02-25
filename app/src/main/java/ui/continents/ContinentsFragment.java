@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ui.continents.adapters.SightseeingAdapter;
-
 import ui.continents.quiz.CategorySelectFragment;
 import com.example.countryexplorerd.MainActivity;
 import com.example.countryexplorerd.R;
@@ -75,7 +74,6 @@ public class ContinentsFragment extends Fragment {
         tvCountryFact         = view.findViewById(R.id.tvCountryFact);
         btnLearnMore          = view.findViewById(R.id.btnLearnMore);
 
-        // Кнопка "Факт дня"
         LinearLayout btnFactOfDay = view.findViewById(R.id.btn_fact_of_day);
         if (btnFactOfDay != null) {
             btnFactOfDay.setOnClickListener(v -> showFactOfDay());
@@ -94,12 +92,54 @@ public class ContinentsFragment extends Fragment {
         setupSightseeingCarousel();
         setupClickListeners(cardCapitals, cardFlags, cardCurrency);
         setupMapTouchListener(mapImage);
+        setupDailyChallenge(view); // <- челлендж дня (исправленный)
 
         return view;
     }
 
     // ════════════════════════════════════════════════════════════════════
-    // ФАКТ ДНЯ — читаем из assets/facts.json
+    // ЧЕЛЛЕНДЖ ДНЯ (исправленный - просто карточка)
+    // ════════════════════════════════════════════════════════════════════
+    private void setupDailyChallenge(View view) {
+        CardView cardChallenge = view.findViewById(R.id.cardDailyChallenge);
+        TextView tvChallengeTitle = view.findViewById(R.id.tvChallengeTitle);
+        TextView tvChallengeDesc = view.findViewById(R.id.tvChallengeDesc);
+
+        if (cardChallenge == null || tvChallengeTitle == null || tvChallengeDesc == null) return;
+
+        countryViewModel.getTodayChallenge().observe(getViewLifecycleOwner(), challenge -> {
+            if (challenge == null) {
+                // Если челленджа нет, показываем заглушку
+                tvChallengeTitle.setText("Флаги мира");
+                tvChallengeDesc.setText("Угадай 6 флагов стран со всего мира");
+                return;
+            }
+
+            // Устанавливаем данные из челленджа
+            tvChallengeTitle.setText(challenge.getTitle());
+            tvChallengeDesc.setText(challenge.getDescription());
+
+            // Карточка просто информационная, без клика
+            cardChallenge.setOnClickListener(null);
+            cardChallenge.setAlpha(1.0f);
+
+            // Если хотите, чтобы карточка вела на задание - раскомментируйте:
+            /*
+            cardChallenge.setOnClickListener(v -> {
+                Bundle args = new Bundle();
+                args.putString("mode", challenge.getType());
+                args.putString("continent", challenge.getContinent());
+
+                CategorySelectFragment fragment = new CategorySelectFragment();
+                fragment.setArguments(args);
+                switchFragment(fragment);
+            });
+            */
+        });
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // ФАКТ ДНЯ
     // ════════════════════════════════════════════════════════════════════
     private void showFactOfDay() {
         try {
@@ -121,7 +161,6 @@ public class ContinentsFragment extends Fragment {
             String factText  = factObj.getString("fact");
 
             showFactBottomSheet(flag, country, continent, category, factText);
-
         } catch (Exception e) {
             Toast.makeText(getContext(), "Не удалось загрузить факт", Toast.LENGTH_SHORT).show();
         }
@@ -138,7 +177,6 @@ public class ContinentsFragment extends Fragment {
         TextView dateView    = sheetView.findViewById(R.id.fact_date);
         TextView badgeView   = sheetView.findViewById(R.id.fact_new_badge);
 
-        // Устанавливаем данные из JSON
         flagView.setText(flag);
         countryView.setText(country);
         textView.setText(factText);
@@ -146,7 +184,6 @@ public class ContinentsFragment extends Fragment {
         String today = new SimpleDateFormat("d MMMM yyyy", new Locale("ru")).format(new Date());
         dateView.setText(today);
 
-        // Бейдж "НОВЫЙ" — только если не открывали сегодня
         SharedPreferences prefs = requireActivity()
                 .getSharedPreferences("FactPrefs", Context.MODE_PRIVATE);
         int savedDay = prefs.getInt("last_fact_seen", -1);
@@ -159,7 +196,7 @@ public class ContinentsFragment extends Fragment {
     }
 
     // ════════════════════════════════════════════════════════════════════
-    // КАРУСЕЛЬ
+    // КАРУСЕЛЬ ДОСТОПРИМЕЧАТЕЛЬНОСТЕЙ
     // ════════════════════════════════════════════════════════════════════
     private void setupSightseeingCarousel() {
         sightseeingViewModel.getSightseeingList().observe(getViewLifecycleOwner(), sights -> {
@@ -254,9 +291,9 @@ public class ContinentsFragment extends Fragment {
             if (card == null) continue;
             card.setOnClickListener(v -> {
                 String mode = "";
-                if      (v.getId() == R.id.cardCapitals)  mode = "capitals";
-                else if (v.getId() == R.id.cardFlags)     mode = "flags";
-                else if (v.getId() == R.id.cardCurrency)  mode = "currency";
+                if      (v.getId() == R.id.cardCapitals) mode = "capitals";
+                else if (v.getId() == R.id.cardFlags)    mode = "flags";
+                else if (v.getId() == R.id.cardCurrency) mode = "currency";
 
                 Bundle args = new Bundle();
                 args.putString("mode", mode);
@@ -289,12 +326,12 @@ public class ContinentsFragment extends Fragment {
 
     private void openContinent(int r, int g, int b) {
         Fragment fragment = null;
-        if      (r > 150 && g < 120 && b < 120)  fragment = new AsiaFragment();
-        else if (r > 100 && r < 220 && b > 150)  fragment = new AfricaFragment();
-        else if (r < 160 && g > 110 && b > 180)  fragment = new NAmericaFragment();
-        else if (r > 180 && g > 150 && b < 170)  fragment = new SAmericaFragment();
-        else if (g > 140 && r < 100)              fragment = new EuropeFragment();
-        else if (r > 100 && g > 60  && b < 160)  fragment = new AustraliaFragment();
+        if      (r > 150 && g < 120 && b < 120) fragment = new AsiaFragment();
+        else if (r > 100 && r < 220 && b > 150) fragment = new AfricaFragment();
+        else if (r < 160 && g > 110 && b > 180) fragment = new NAmericaFragment();
+        else if (r > 180 && g > 150 && b < 170) fragment = new SAmericaFragment();
+        else if (g > 140 && r < 100)             fragment = new EuropeFragment();
+        else if (r > 100 && g > 60  && b < 160) fragment = new AustraliaFragment();
 
         if (fragment != null) switchFragment(fragment);
     }

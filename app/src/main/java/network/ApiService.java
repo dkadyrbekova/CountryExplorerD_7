@@ -12,16 +12,15 @@ import retrofit2.http.GET;
 
 public interface ApiService {
 
-    // Запрос списка стран
-    @GET("Get data")
+    // Запрос списка стран - исправлено
+    @GET("countries")  // было "Get data"
     Call<List<Country>> getAllCountries();
 
-    // Запрос деталей стран
-    @GET("details")
+    // Запрос деталей стран - исправлено
+    @GET("details")    // было "details" (правильно)
     Call<Map<String, CountryDetail>> getCountryDetails();
 
-    // НОВЫЙ ЗАПРОС: Достопримечательности для нашей карусели
-    // Обновили путь на "top", так как твоя ссылка ведет именно туда
-    @GET("top")
+    // Запрос достопримечательностей - исправлено
+    @GET("sightseeing")  // было "top"
     Call<List<Sightseeing>> getSightseeingData();
 }

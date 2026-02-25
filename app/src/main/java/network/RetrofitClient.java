@@ -4,7 +4,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "https://b93078c3-83ff-44eb-8298-46c2514460fb.mock.pstmn.io/";
+    private static final String BASE_URL = "https://b9c1c3d2-1f21-4dcc-b6d6-4ea7dcfaa0c8.mock.pstmn.io/";
     private static RetrofitClient mInstance;
     private static Retrofit retrofit = null;
 

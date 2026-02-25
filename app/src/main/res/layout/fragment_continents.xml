@@ -18,7 +18,6 @@
         android:paddingStart="20dp"
         android:paddingEnd="12dp">
 
-        <!-- Заголовок -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -44,7 +43,6 @@
 
         </LinearLayout>
 
-        <!-- Кнопка "Факт дня" -->
         <LinearLayout
             android:id="@+id/btn_fact_of_day"
             android:layout_width="wrap_content"
@@ -91,6 +89,7 @@
             android:paddingHorizontal="16dp"
             android:paddingBottom="80dp">
 
+            <!-- ── Карта мира ─────────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
@@ -111,6 +110,7 @@
 
             </androidx.cardview.widget.CardView>
 
+            <!-- ── Заголовок режимов обучения ────────────────────────── -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -121,6 +121,7 @@
                 android:layout_marginBottom="12dp"
                 android:layout_marginStart="4dp"/>
 
+            <!-- ── Карточка Столицы ───────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCapitals"
                 android:layout_width="match_parent"
@@ -177,6 +178,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- ── Карточка Флаги ─────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardFlags"
                 android:layout_width="match_parent"
@@ -233,6 +235,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- ── Карточка Валюты ────────────────────────────────────── -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardCurrency"
                 android:layout_width="match_parent"
@@ -289,6 +292,87 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- ══════════════════════════════════════════════════════════
+                 ЧЕЛЛЕНДЖ ДНЯ (с красивым градиентом)
+                 ══════════════════════════════════════════════════════════ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Челлендж дня"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorTextPrimary"
+                android:layout_marginBottom="12dp"
+                android:layout_marginStart="4dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardDailyChallenge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/transparent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:background="@drawable/gradient_challenge_orange">
+
+                    <!-- Верхняя строка: иконка + тип задания -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🎯"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ЗАДАНИЕ ДНЯ"
+                            android:textSize="12sp"
+                            android:textColor="#E65100"
+                            android:textStyle="bold"
+                            android:letterSpacing="0.05"
+                            android:layout_marginStart="8dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Название задания -->
+                    <TextView
+                        android:id="@+id/tvChallengeTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Флаги мира"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#BF360C"/>
+
+                    <!-- Описание задания -->
+                    <TextView
+                        android:id="@+id/tvChallengeDesc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Угадай 6 флагов стран со всего мира"
+                        android:textSize="14sp"
+                        android:textColor="#5D4037"
+                        android:lineSpacingExtra="3dp"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- ── Топ достопримечательностей ────────────────────────── -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -309,6 +393,7 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+            <!-- ── Открой сегодня (Страна дня) ──────────────────────── -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
